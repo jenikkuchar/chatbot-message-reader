@@ -724,27 +724,19 @@ export default function App() {
         /* Startup Landing Page */
         <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-7 sm:py-10">
           <div className="max-w-[1200px] mx-auto w-full space-y-5 select-none">
-            {/* Headline & Branding */}
-            <div className="space-y-2">
-              <span className="badge badge-dot b-ok">
-                Snímač připraven k náboru dat
-              </span>
+            {/* Headline */}
+            <div className="space-y-1">
               <h2 className="text-2xl sm:text-[32px] leading-tight font-semibold tracking-tight">
-                DATART Chat Insights & Parser
+                Prohlížení konverzací
               </h2>
-              <p className="text-[13px] sm:text-sm text-fg-muted max-w-2xl">
-                Pokročilý auditní analytický nástroj pro inspekci, vyhledávání a hodnocení konverzací s asistentem. Chaty se načtou po zavedení JSON souboru z počítače.
+              <p className="text-[13px] text-fg-muted max-w-2xl">
+                Vyhledávání a hodnocení konverzací s asistentem z exportu ve formátu JSON.
               </p>
             </div>
 
             {/* Direct JSON Import/Upload Panel */}
             <div className="w-full">
               <div className="panel p-4 sm:p-5">
-                <div className="space-y-0.5 mb-4">
-                  <h3 className="section-label">Načíst data z počítače</h3>
-                  <p className="text-xs text-fg-subtle">Zvolte nebo přetáhněte exportovaný .json soubor s konverzačními záznamy, případně vložte raw JSON text níže.</p>
-                </div>
-                
                 <JSONImportExport onImport={handleImportChats} onReset={handleResetToDefault} />
               </div>
             </div>

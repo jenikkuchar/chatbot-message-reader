@@ -164,6 +164,8 @@ export default function JSONImportExport({ onImport, onReset, onClose }: JSONImp
 
   return (
     <div className="@container">
+      {/* Header with actions only in the inline importer (data already loaded) */}
+      {onClose && (
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-4 mb-4 border-b border-line">
         <div>
           <h2 className="text-base font-semibold tracking-tight flex items-center gap-2">
@@ -192,6 +194,7 @@ export default function JSONImportExport({ onImport, onReset, onClose }: JSONImp
           </button>
         </div>
       </div>
+      )}
 
       <div className="grid grid-cols-1 @2xl:grid-cols-2 gap-4">
         {/* Left column: Drag zone & File upload */}
@@ -220,14 +223,17 @@ export default function JSONImportExport({ onImport, onReset, onClose }: JSONImp
               <Upload className="w-6 h-6" strokeWidth={1.8} />
             </span>
             <p className="text-xl font-semibold tracking-tight text-balance mt-1.5">
-              Přetáhněte sem .json soubor nebo klikněte pro procházení
+              Nahrajte konverzace
+            </p>
+            <p className="text-fg-muted max-w-[46ch]">
+              Přetáhněte sem jeden nebo více JSON souborů, nebo je vyberte z počítače.
             </p>
             <button type="button" className="btn btn-primary mt-1.5">
               <Upload />
               Vybrat soubory
             </button>
             <p className="text-xs text-fg-subtle mt-0.5">
-              Podporuje pouze soubory typu .json
+              Podporovaný formát: .json · data zůstávají jen v prohlížeči
             </p>
           </div>
         </div>
@@ -237,14 +243,14 @@ export default function JSONImportExport({ onImport, onReset, onClose }: JSONImp
           <textarea
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
-            placeholder='Vložte sem raw JSON data... např: [{"chat_id": "123", ...}]'
+            placeholder='Nebo sem vložte JSON text, např. [{"chat_id": "123", …}]'
             className="input h-auto min-h-[200px] flex-1 py-2.5 font-mono text-[12.5px] resize-none"
           />
           <button
             onClick={handleTextSubmit}
             className="btn btn-secondary w-full"
           >
-            Načíst a vložit JSON text
+            Načíst vložený JSON
           </button>
         </div>
       </div>
