@@ -22,7 +22,7 @@ function highlightText(text: string, search: string) {
   
   return parts.map((part, idx) => 
     part.toLowerCase() === search.toLowerCase()
-      ? <mark id={`highlight-${part.toLowerCase()}`} key={idx} className="bg-amber-400 text-slate-950 font-semibold px-0.5 rounded shadow-sm border border-amber-300/40">{part}</mark>
+      ? <mark id={`highlight-${part.toLowerCase()}`} key={idx} className="bg-warning text-bg font-semibold px-0.5 rounded-[3px]">{part}</mark>
       : part
   );
 }
@@ -45,7 +45,7 @@ function renderFormattedText(text: string, search?: string) {
       if (part.startsWith('**') && part.endsWith('**')) {
         const boldText = part.slice(2, -2);
         return (
-          <strong key={pIdx} className="font-bold text-slate-100">
+          <strong key={pIdx} className="font-semibold text-fg">
             {search ? highlightText(boldText, search) : boldText}
           </strong>
         );
@@ -55,14 +55,14 @@ function renderFormattedText(text: string, search?: string) {
 
     if (isBullet) {
       return (
-        <li key={lIdx} className="ml-4 list-disc text-slate-300 text-xs sm:text-sm my-1 font-sans">
+        <li key={lIdx} className="ml-4 list-disc marker:text-fg-subtle text-[13px] sm:text-sm my-1">
           {contentSpan}
         </li>
       );
     }
 
     return (
-      <p key={lIdx} className="text-xs sm:text-sm text-slate-300 font-sans leading-relaxed my-1.5 min-h-[0.5rem]">
+      <p key={lIdx} className="text-[13px] sm:text-sm leading-relaxed my-1.5 min-h-[0.5rem]">
         {contentSpan}
       </p>
     );
@@ -109,7 +109,7 @@ export default function MessageBubble({ message, themeColor = 'slate', isHighlig
     >
       {/* AI Avatar on left */}
       {isAi && (
-        <div className="w-8 h-8 rounded-lg bg-blue-950/80 border border-blue-500/30 flex items-center justify-center shrink-0 self-start shadow-md text-blue-400">
+        <div className="w-8 h-8 rounded-row bg-accent-soft flex items-center justify-center shrink-0 self-start text-accent">
           <Bot className="w-4.5 h-4.5" />
         </div>
       )}
@@ -117,28 +117,28 @@ export default function MessageBubble({ message, themeColor = 'slate', isHighlig
       {/* Main message bubble block */}
       <div className={`max-w-[85%] sm:max-w-[75%] flex flex-col gap-1.5`}>
         {/* Sender Name & Meta */}
-        <div className={`flex items-center gap-2 text-[10px] font-mono text-slate-500 ${!isAi ? 'flex-row-reverse' : ''}`}>
-          <span className="font-bold text-slate-400">
+        <div className={`flex items-center flex-wrap gap-x-2 gap-y-1 text-xs text-fg-subtle num ${!isAi ? 'flex-row-reverse' : ''}`}>
+          <span className="font-medium text-fg-muted">
             {isAi ? 'DATART Specialista (AI)' : 'Uživatel'}
           </span>
           <span>•</span>
           <span>{formatDateTime(message.created_at)}</span>
           <span>•</span>
-          <span className="bg-slate-900 px-1 py-0.2 rounded border border-slate-800 text-[9px]">
+          <span className="ver">
             {message.verze}
           </span>
         </div>
 
         {/* Message Bubble Canvas */}
         <div
-          className={`p-4 border relative shadow-sm transition-all duration-300 ${
+          className={`px-4 py-3 relative transition-all duration-300 rounded-card ${
             isHighlighted 
-              ? 'ring-2 ring-blue-500 bg-blue-500/10 border-blue-400/90 shadow-[0_0_20px_rgba(59,130,246,0.35)] translate-x-1 scale-[1.01]' 
+              ? 'ring-2 ring-accent' 
               : ''
           } ${
             isAi
-              ? 'bg-blue-500/5 border-blue-500/25 rounded-tr-xl rounded-bl-xl rounded-br-xl text-slate-200'
-              : 'bg-slate-900 border border-slate-800 rounded-tl-xl rounded-bl-xl rounded-br-xl text-slate-300'
+              ? 'bg-surface-1 hairline rounded-tl-[4px] text-fg'
+              : 'bg-surface-2 hairline rounded-tr-[4px] text-fg'
           }`}
         >
           {/* Blocks Mapper (Standard text OR Carousels!) */}
@@ -152,19 +152,19 @@ export default function MessageBubble({ message, themeColor = 'slate', isHighlig
           </div>
 
           {/* Feedback & Message ID Controls Box */}
-          <div className={`flex items-center justify-between mt-3 pt-2.5 border-t border-slate-800/65 text-[10px] font-mono text-slate-500`}>
+          <div className={`flex items-center justify-between flex-wrap gap-2 mt-3 pt-2.5 border-t border-line text-xs text-fg-subtle`}>
             <div className="flex items-center gap-3">
-              <span>ID: {message.message_id}</span>
+              <span className="font-mono num">ID: {message.message_id}</span>
               <button
                 onClick={handleCopy}
                 type="button"
-                className="flex items-center gap-1.5 hover:text-slate-350 active:text-slate-150 transition-colors cursor-pointer select-none font-bold"
+                className="flex items-center gap-1.5 hover:text-accent transition-colors cursor-pointer select-none font-medium"
                 title="Zkopírovat zprávu do schránky"
               >
                 {copied ? (
                   <>
-                    <Check className="w-3 h-3 text-emerald-450 shrink-0" />
-                    <span className="text-emerald-450">Zkopírováno!</span>
+                    <Check className="w-3 h-3 text-success shrink-0" />
+                    <span className="text-success">Zkopírováno!</span>
                   </>
                 ) : (
                   <>
@@ -177,13 +177,13 @@ export default function MessageBubble({ message, themeColor = 'slate', isHighlig
             {message.feedback !== null && (
               <div className="flex items-center gap-1.5 select-none">
                 {message.feedback === true ? (
-                  <div className="flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-950/80 border border-emerald-900/40 text-emerald-400 text-[10px] font-semibold">
-                    <ThumbsUp className="w-3 h-3 fill-current bg-opacity-10 text-emerald-500" />
+                  <div className="badge b-ok">
+                    <ThumbsUp className="w-3 h-3" />
                     <span>Pozitivní hodnocení</span>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-1 px-2 py-0.5 rounded bg-rose-955/80 border border-rose-900/40 text-rose-400 text-[10px] font-semibold">
-                    <ThumbsDown className="w-3 h-3 fill-current bg-opacity-10 text-rose-500" />
+                  <div className="badge b-err">
+                    <ThumbsDown className="w-3 h-3" />
                     <span>Nespokojenost / Stížnost</span>
                   </div>
                 )}
@@ -195,7 +195,7 @@ export default function MessageBubble({ message, themeColor = 'slate', isHighlig
 
       {/* User Avatar on right */}
       {!isAi && (
-        <div className="w-8 h-8 rounded-lg bg-slate-800/80 border border-slate-700 flex items-center justify-center shrink-0 self-start shadow-md text-slate-400">
+        <div className="w-8 h-8 rounded-row bg-surface-3 hairline flex items-center justify-center shrink-0 self-start text-fg-muted">
           <User className="w-4.5 h-4.5" />
         </div>
       )}

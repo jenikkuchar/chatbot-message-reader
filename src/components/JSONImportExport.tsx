@@ -163,14 +163,16 @@ export default function JSONImportExport({ onImport, onReset, onClose }: JSONImp
   };
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 mb-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-4 mb-4">
+    <div className="@container">
+      {/* Header with actions only in the inline importer (data already loaded) */}
+      {onClose && (
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-4 mb-4 border-b border-line">
         <div>
-          <h2 className="text-base font-semibold text-slate-100 flex items-center gap-2">
-            <Upload className="w-4 h-4 text-blue-400" />
+          <h2 className="text-base font-semibold tracking-tight flex items-center gap-2">
+            <Upload className="w-4 h-4 text-accent" />
             Načíst vlastní JSON data
           </h2>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-[13px] text-fg-muted mt-0.5">
             Vložte JSON soubor nebo přímo text odpovídající struktuře s konverzacemi
           </p>
         </div>
@@ -178,22 +180,23 @@ export default function JSONImportExport({ onImport, onReset, onClose }: JSONImp
           {onClose && (
             <button
               onClick={onClose}
-              className="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-slate-600 text-slate-200 rounded-lg flex items-center gap-1.5 transition-all duration-150 cursor-pointer active:scale-95 select-none font-sans font-medium"
+              className="btn btn-secondary btn-sm"
             >
               Zavřít panel
             </button>
           )}
           <button
             onClick={onReset}
-            className="px-3 py-1.5 text-xs bg-rose-955/45 hover:bg-rose-900/40 border border-rose-900/40 hover:border-rose-700 text-rose-300 rounded-lg flex items-center gap-1.5 transition-all duration-150 cursor-pointer active:scale-95 select-none"
+            className="btn btn-danger btn-sm"
           >
-            <Trash2 className="w-3.5 h-3.5 text-rose-455" />
+            <Trash2 />
             Vymazat všechny chaty
           </button>
         </div>
       </div>
+      )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 @2xl:grid-cols-2 gap-4">
         {/* Left column: Drag zone & File upload */}
         <div className="flex flex-col gap-3 justify-center">
           <div
@@ -201,11 +204,12 @@ export default function JSONImportExport({ onImport, onReset, onClose }: JSONImp
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
             onClick={() => fileInputRef.current?.click()}
-            className={`border-2 border-dashed rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 min-h-[160px] ${
+            className={`rounded-panel border border-dashed px-5 py-8 flex flex-col items-center justify-center text-center gap-2.5 cursor-pointer transition-colors duration-150 min-h-[200px] ${
               isDragOver
-                ? 'border-blue-500 bg-blue-950/20'
-                : 'border-slate-800 hover:border-slate-700 bg-slate-950/40 hover:bg-slate-950/75'
+                ? 'border-accent bg-accent-soft'
+                : 'border-line-3 bg-white/[.02] hover:border-accent hover:bg-accent-soft'
             }`}
+            style={{ borderWidth: 1 }}
           >
             <input
               type="file"
@@ -215,14 +219,21 @@ export default function JSONImportExport({ onImport, onReset, onClose }: JSONImp
               multiple
               className="hidden"
             />
-            <div className="p-3 bg-slate-900/80 rounded-full border border-slate-800 mb-3 text-slate-400">
-              <Upload className="w-6 h-6 text-blue-400" />
-            </div>
-            <p className="text-sm font-sans text-slate-300 font-medium">
-              Přetáhněte sem .json soubor nebo klikněte pro procházení
+            <span className="w-[52px] h-[52px] rounded-full bg-accent-soft text-accent grid place-items-center">
+              <Upload className="w-6 h-6" strokeWidth={1.8} />
+            </span>
+            <p className="text-xl font-semibold tracking-tight text-balance mt-1.5">
+              Nahrajte konverzace
             </p>
-            <p className="text-xs text-slate-500 mt-1 font-mono">
-              Podporuje pouze soubory typu .json
+            <p className="text-fg-muted max-w-[46ch]">
+              Přetáhněte sem jeden nebo více JSON souborů, nebo je vyberte z počítače.
+            </p>
+            <button type="button" className="btn btn-primary mt-1.5">
+              <Upload />
+              Vybrat soubory
+            </button>
+            <p className="text-xs text-fg-subtle mt-0.5">
+              Podporovaný formát: .json · data zůstávají jen v prohlížeči
             </p>
           </div>
         </div>
@@ -232,29 +243,29 @@ export default function JSONImportExport({ onImport, onReset, onClose }: JSONImp
           <textarea
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
-            placeholder='Vložte sem raw JSON data... např: [{"chat_id": "123", ...}]'
-            className="w-full h-[160px] bg-slate-950 text-slate-300 font-mono text-xs p-3 rounded-lg border border-slate-800 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none transition-colors duration-150"
+            placeholder='Nebo sem vložte JSON text, např. [{"chat_id": "123", …}]'
+            className="input h-auto min-h-[200px] flex-1 py-2.5 font-mono text-[12.5px] resize-none"
           />
           <button
             onClick={handleTextSubmit}
-            className="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-sans font-semibold text-xs transition-colors duration-150 active:scale-[0.99] select-none cursor-pointer text-center font-bold"
+            className="btn btn-secondary w-full"
           >
-            Načíst a vložit JSON text
+            Načíst vložený JSON
           </button>
         </div>
       </div>
 
       {/* Message alerts */}
       {errorMsg && (
-        <div className="mt-4 p-3 bg-rose-950/40 border border-rose-900/50 rounded-lg flex items-start gap-2 text-rose-300 text-xs">
-          <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+        <div className="mt-4 p-3 bg-danger-soft rounded-row flex items-start gap-2 text-danger text-[13px] whitespace-pre-line">
+          <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
           <div className="font-medium">{errorMsg}</div>
         </div>
       )}
 
       {successMsg && (
-        <div className="mt-4 p-3 bg-emerald-950/30 border border-emerald-900/40 rounded-lg flex items-start gap-2 text-emerald-300 text-xs">
-          <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+        <div className="mt-4 p-3 bg-success-soft rounded-row flex items-start gap-2 text-success text-[13px]">
+          <Check className="w-4 h-4 shrink-0 mt-0.5" />
           <div className="font-medium">{successMsg}</div>
         </div>
       )}
