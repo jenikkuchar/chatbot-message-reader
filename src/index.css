@@ -1,32 +1,122 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
+/* ---- Grafický manuál JK · brand/tailwind-v4.css ---- */
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --color-bg:#08080c;
+  --color-surface-1:#111117;
+  --color-surface-2:#18181f;
+  --color-surface-3:#22222b;
+  --color-line:rgba(255,255,255,.10);
+  --color-line-strong:rgba(255,255,255,.14);
+  --color-fg:#f5f5f7;
+  --color-fg-muted:rgba(235,235,245,.60);
+  --color-fg-subtle:rgba(235,235,245,.38);
+  --color-accent:#0a84ff;
+  --color-accent-hover:#409cff;
+  --color-accent-strong:#0071e3;
+  --color-accent-soft:rgba(10,132,255,.16);
+  --color-success:#30d158;
+  --color-warning:#ff9f0a;
+  --color-danger:#ff453a;
+  --color-info:#64d2ff;
+  --color-chart-1:#0a84ff; --color-chart-2:#30d158; --color-chart-3:#ff9f0a; --color-chart-4:#bf5af2;
+  --color-chart-5:#ff375f; --color-chart-6:#64d2ff; --color-chart-7:#ffd60a; --color-chart-8:#ac8e68;
+
+  --font-sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",system-ui,sans-serif;
+  --font-mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+
+  --radius-row:8px;
+  --radius-button:10px;
+  --radius-card:14px;
+  --radius-panel:18px;
+}
+html{color-scheme:dark}
+body{@apply bg-bg text-fg font-sans antialiased text-sm}
+
+/* ---- Doplňky z brand/tokens.css ---- */
+@theme {
+  --color-line-3:rgba(255,255,255,.22);
+  --color-glass:rgba(32,32,40,.72);
+  --color-accent-strong-hover:#0077ed;
+  --color-success-soft:rgba(48,209,88,.16);
+  --color-warning-soft:rgba(255,159,10,.16);
+  --color-danger-soft:rgba(255,69,58,.16);
+  --color-info-soft:rgba(100,210,255,.16);
+  --radius-kbd:5px;
+  /* border, border-b, divide-y = hairline 0,5 px */
+  --default-border-width:.5px;
 }
 
-/* Custom scrollbar styling for dark theme */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+body{
+  line-height:1.5;
+  background-image:radial-gradient(70% 40% at 50% -10%,rgba(94,92,230,.14),transparent 70%);
+  background-attachment:fixed;
+}
+a{color:var(--color-accent)}
+a:hover{color:var(--color-accent-hover)}
+:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(10,132,255,.45)}
+
+/* ---- Komponenty podle manuálu ---- */
+@layer components{
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 14px;
+    border-radius:var(--radius-button);font-size:14px;font-weight:500;white-space:nowrap;cursor:pointer;
+    transition:background .15s,color .15s,box-shadow .15s;
+  }
+  .btn svg{width:16px;height:16px;flex:none}
+  .btn-sm{height:28px;padding:0 10px;font-size:13px;border-radius:var(--radius-row);gap:6px}
+  .btn-sm svg{width:14px;height:14px}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .btn-primary{background:var(--color-accent-strong);color:#fff}
+  .btn-primary:not(:disabled):hover{background:var(--color-accent-strong-hover)}
+  .btn-secondary{background:rgba(255,255,255,.07);color:var(--color-fg);box-shadow:0 0 0 .5px var(--color-line-strong) inset}
+  .btn-secondary:not(:disabled):hover{background:rgba(255,255,255,.12)}
+  .btn-ghost{background:transparent;color:var(--color-accent)}
+  .btn-ghost:not(:disabled):hover{background:var(--color-accent-soft)}
+  .btn-danger{background:transparent;color:var(--color-danger);box-shadow:0 0 0 .5px rgba(255,69,58,.4) inset}
+  .btn-danger:not(:disabled):hover{background:var(--color-danger-soft)}
+  .btn-icon{width:32px;height:32px;padding:0;border-radius:var(--radius-row);color:var(--color-fg-muted)}
+  .btn-icon:not(:disabled):hover{background:rgba(255,255,255,.07);color:var(--color-fg)}
+
+  .input{
+    height:36px;width:100%;padding:0 12px;border-radius:var(--radius-row);background:var(--color-surface-2);
+    color:var(--color-fg);box-shadow:0 0 0 .5px var(--color-line-strong) inset;transition:box-shadow .15s;
+  }
+  .input::placeholder{color:var(--color-fg-subtle)}
+  .input:focus,.input:focus-within{outline:none;box-shadow:0 0 0 1px var(--color-accent) inset,0 0 0 3px rgba(10,132,255,.45)}
+  .label{font-size:12px;font-weight:500;color:var(--color-fg-muted)}
+  .section-label{font-size:11px;font-weight:600;color:var(--color-fg-subtle)}
+
+  .card{background:var(--color-surface-1);border-radius:var(--radius-card);box-shadow:0 0 0 .5px var(--color-line-strong) inset}
+  .panel{background:var(--color-surface-1);border-radius:var(--radius-panel);box-shadow:0 0 0 .5px var(--color-line-strong) inset}
+  .hairline{box-shadow:0 0 0 .5px var(--color-line-strong) inset}
+
+  .badge{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:6px;font-size:12px;font-weight:500;white-space:nowrap}
+  .badge-dot::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;flex:none}
+  .b-ok{color:var(--color-success);background:var(--color-success-soft)}
+  .b-warn{color:var(--color-warning);background:var(--color-warning-soft)}
+  .b-err{color:var(--color-danger);background:var(--color-danger-soft)}
+  .b-info{color:var(--color-info);background:var(--color-info-soft)}
+  .b-accent{color:var(--color-accent);background:var(--color-accent-soft)}
+  .b-neutral{color:var(--color-fg-muted);background:rgba(255,255,255,.07)}
+  .ver{font-family:var(--font-mono);font-size:11px;color:var(--color-fg-subtle);padding:1px 6px;border-radius:var(--radius-kbd);box-shadow:0 0 0 .5px var(--color-line-strong) inset;white-space:nowrap}
+
+  .checkbox{width:16px;height:16px;border-radius:5px;display:flex;align-items:center;justify-content:center;flex:none;
+    background:var(--color-surface-2);box-shadow:0 0 0 .5px var(--color-line-3) inset;transition:background .15s,box-shadow .15s}
+  .checkbox[data-checked="true"]{background:var(--color-accent-strong);box-shadow:none;color:#fff}
+
+  .glass{background:var(--color-glass);backdrop-filter:blur(30px) saturate(180%);-webkit-backdrop-filter:blur(30px) saturate(180%)}
+  .brand-mark{background:linear-gradient(135deg,#0a84ff,#bf5af2 50%,#ff375f);box-shadow:0 0 0 .5px rgba(255,255,255,.18) inset}
+  .num{font-variant-numeric:tabular-nums}
 }
 
-::-webkit-scrollbar-track {
-  background: #020617;
-}
+/* Posuvníky */
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--color-surface-3);border-radius:8px}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.22)}
 
-::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 4px;
-}
+select option{background:var(--color-surface-2);color:var(--color-fg)}
 
-::-webkit-scrollbar-thumb:hover {
-  background: #475569;
-}
-
-body {
-  background-color: #0d131e;
-  color: #f3f4f6;
-  font-family: var(--font-sans);
-}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}

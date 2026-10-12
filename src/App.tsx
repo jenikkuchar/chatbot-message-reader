@@ -652,44 +652,43 @@ export default function App() {
   };
 
   return (
-    <div className="h-screen max-h-screen bg-[#0d131e] text-slate-200 font-sans flex flex-col overflow-hidden select-none antialiased">
+    <div className="min-h-dvh md:h-dvh md:max-h-dvh text-fg font-sans flex flex-col md:overflow-hidden select-none antialiased">
       
       {/* Top Navigation / Header */}
-      <header className="h-16 border-b border-slate-800 flex items-center justify-between px-6 bg-slate-900/50 shrink-0">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-end justify-center gap-[3px] p-1.5 select-none shrink-0 shadow-lg shadow-blue-500/10">
-            <div className="w-[3px] h-2 bg-white rounded-full"></div>
-            <div className="w-[3px] h-3.5 bg-white rounded-full"></div>
-            <div className="w-[3px] h-5 bg-white rounded-full"></div>
-          </div>
-          <div>
-            <h1 className="text-sm font-semibold tracking-wider text-white uppercase flex items-center gap-1.5">
-              <span className="font-bold">DATART Inspector</span>
-              <span className="text-slate-400 font-normal">| AI Statistiky</span>
-              <span className="text-[9px] font-mono bg-blue-950/60 text-blue-400 border border-blue-900/30 px-1.5 py-0.2 rounded normal-case tracking-normal ml-1">v1.1</span>
-            </h1>
-            <p className="text-[10px] text-slate-450 font-mono -mt-0.5">DATART insights & logs parser</p>
-          </div>
+      <header className="h-14 sticky top-0 z-30 border-b border-line flex items-center justify-between gap-3 px-4 sm:px-5 glass shrink-0">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <a
+            href="https://www.jan-kuchar.cz"
+            aria-label="jan-kuchar.cz"
+            className="brand-mark size-[26px] rounded-[7px] grid place-items-center text-[11px] font-extrabold tracking-tight !text-white shrink-0"
+          >
+            JK
+          </a>
+          <span className="text-fg-subtle text-lg font-light" aria-hidden="true">/</span>
+          <img src="/favicon.svg" alt="" className="size-[26px] shrink-0" />
+          <h1 className="text-[15px] font-light tracking-tight whitespace-nowrap">
+            Chat <span className="font-semibold">Inspector</span>
+          </h1>
+          <span className="ver hidden sm:inline">v1.1</span>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 min-w-0">
           {chats.length > 0 && !isLoading && (
             <>
+              <span className="hidden md:inline text-xs text-fg-subtle num whitespace-nowrap">
+                {isAnyFilterActive ? (
+                  <>Nalezeno: <span className="text-fg font-medium">{filteredChats.length.toLocaleString('cs-CZ')}</span> z {chats.length.toLocaleString('cs-CZ')} chatů <span className="text-accent">({chats.length ? Math.round((filteredChats.length / chats.length) * 100) : 0} %)</span></>
+                ) : (
+                  <>Celkem: {chats.length.toLocaleString('cs-CZ')} chatů</>
+                )}
+              </span>
+
               <button
                 onClick={() => setIsImporterOpen(!isImporterOpen)}
-                className="px-3 py-1.5 text-xs font-semibold bg-slate-800 border border-slate-700 rounded hover:bg-slate-700 text-slate-100 transition-colors uppercase tracking-wider cursor-pointer active:scale-95"
+                className="btn btn-secondary btn-sm"
               >
                 {isImporterOpen ? 'Zavřít panel' : 'Importovat JSON'}
               </button>
-
-              <div className="hidden md:block h-4 w-[1px] bg-slate-800"></div>
-              <span className="hidden md:inline text-xs text-slate-400 font-mono">
-                {isAnyFilterActive ? (
-                  <>Nalezeno: <span className="text-blue-400 font-bold">{filteredChats.length}</span> z {chats.length} chatů <span className="text-blue-400">({chats.length ? Math.round((filteredChats.length / chats.length) * 100) : 0}%)</span></>
-                ) : (
-                  <>Celkem: {chats.length} chatů</>
-                )}
-              </span>
             </>
           )}
         </div>
@@ -698,53 +697,52 @@ export default function App() {
       {/* Main Workspace Body */}
       {isLoading ? (
         /* Loader block */
-        <div className="flex-1 flex flex-col items-center justify-center p-8 bg-[#0d131e] text-center select-none">
+        <div className="flex-1 flex flex-col items-center justify-center p-8 text-center select-none">
           <div className="relative w-24 h-24 mb-6 flex items-center justify-center">
             {/* Animated spinning outline */}
-            <div className="absolute inset-0 border-4 border-slate-800/80 rounded-full"></div>
-            <div className="absolute inset-0 border-4 border-t-blue-500 border-r-blue-500/20 rounded-full animate-spin"></div>
+            <div className="absolute inset-0 border-[3px] border-surface-3 rounded-full"></div>
+            <div className="absolute inset-0 border-[3px] border-transparent border-t-accent rounded-full animate-spin"></div>
             
             {/* Percentage Indicator */}
-            <span className="text-base font-mono font-bold text-slate-100">{loadingProgress}%</span>
+            <span className="text-lg font-semibold num">{loadingProgress} %</span>
           </div>
           
-          <div className="space-y-2 max-w-md">
-            <h3 className="text-white font-semibold text-sm font-mono tracking-wider uppercase">Provádím analýzu dat...</h3>
-            <p className="text-xs text-slate-400 font-mono italic animate-pulse h-4">{loadingText}</p>
+          <div className="space-y-1 max-w-md">
+            <h3 className="text-xl font-semibold tracking-tight">Provádím analýzu dat...</h3>
+            <p className="text-[13px] text-fg-muted h-5">{loadingText}</p>
           </div>
 
           {/* Progressive visual bar */}
-          <div className="w-60 h-1.5 bg-slate-900 rounded-full overflow-hidden mt-6 border border-slate-800">
+          <div className="w-60 h-1 bg-surface-3 rounded-full overflow-hidden mt-6">
             <div 
-              className="h-full bg-blue-600 transition-all duration-150" 
+              className="h-full bg-accent transition-all duration-150" 
               style={{ width: `${loadingProgress}%` }}
             ></div>
           </div>
         </div>
       ) : chats.length === 0 ? (
         /* Startup Landing Page */
-        <div className="flex-1 flex flex-col items-center justify-center p-6 md:p-12 overflow-y-auto bg-[#0d131e]">
-          <div className="max-w-4xl w-full space-y-8 my-auto select-none">
+        <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-7 sm:py-10">
+          <div className="max-w-[1200px] mx-auto w-full space-y-5 select-none">
             {/* Headline & Branding */}
-            <div className="text-center space-y-3">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-mono font-semibold uppercase tracking-wider">
-                <Terminal className="w-3.5 h-3.5" />
+            <div className="space-y-2">
+              <span className="badge badge-dot b-ok">
                 Snímač připraven k náboru dat
-              </div>
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-sans">
+              </span>
+              <h2 className="text-2xl sm:text-[32px] leading-tight font-semibold tracking-tight">
                 DATART Chat Insights & Parser
               </h2>
-              <p className="text-sm text-slate-400 max-w-xl mx-auto leading-relaxed">
+              <p className="text-[13px] sm:text-sm text-fg-muted max-w-2xl">
                 Pokročilý auditní analytický nástroj pro inspekci, vyhledávání a hodnocení konverzací s asistentem. Chaty se načtou po zavedení JSON souboru z počítače.
               </p>
             </div>
 
             {/* Direct JSON Import/Upload Panel */}
-            <div className="max-w-3xl mx-auto w-full">
-              <div className="bg-slate-900/30 border border-slate-800 rounded-xl p-6">
-                <div className="space-y-1 mb-4">
-                  <h3 className="text-sm font-semibold text-slate-200">Načíst data z počítače</h3>
-                  <p className="text-xs text-slate-500">Zvolte nebo přetáhněte exportovaný .json soubor s konverzačními záznamy, případně vložte raw JSON text níže.</p>
+            <div className="w-full">
+              <div className="panel p-4 sm:p-5">
+                <div className="space-y-0.5 mb-4">
+                  <h3 className="section-label">Načíst data z počítače</h3>
+                  <p className="text-xs text-fg-subtle">Zvolte nebo přetáhněte exportovaný .json soubor s konverzačními záznamy, případně vložte raw JSON text níže.</p>
                 </div>
                 
                 <JSONImportExport onImport={handleImportChats} onReset={handleResetToDefault} />
@@ -755,10 +753,10 @@ export default function App() {
       ) : (
         /* Original Dashboard Workspace with loaded data */
         <>
-          <main className="flex-1 flex flex-col md:flex-row overflow-hidden relative">
+          <main className="flex-1 flex flex-col md:flex-row md:overflow-hidden md:min-h-0 relative">
             
             {/* LEFT COLUMN: Sidebar Chat Explorer List (320px) */}
-            <aside className="w-full md:w-85 border-r border-slate-800 bg-slate-900/30 flex flex-col shrink-0 overflow-hidden">
+            <aside className="w-full md:w-85 border-b md:border-b-0 md:border-r border-line bg-surface-1/60 flex flex-col shrink-0 md:overflow-hidden">
               
               {/* Collapsible Importer triggered right here inline for perfect flow */}
               <AnimatePresence>
@@ -768,7 +766,7 @@ export default function App() {
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.18 }}
-                    className="overflow-hidden border-b border-slate-800 bg-slate-950 p-4"
+                    className="overflow-hidden border-b border-line bg-bg p-4"
                   >
                     <JSONImportExport 
                       onImport={handleImportChats} 
@@ -779,24 +777,24 @@ export default function App() {
                 )}
               </AnimatePresence>
 
-               <div className="p-4 border-b border-slate-800 bg-slate-900/40">
+               <div className="p-4 border-b border-line">
                  {/* Collapsible Header */}
                  <div className="flex items-center justify-between">
                    <button
                      onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
-                     className="flex items-center gap-1.5 text-[11px] font-mono font-bold text-slate-400 tracking-wider uppercase hover:text-white transition-colors cursor-pointer select-none"
+                     className="flex items-center gap-2 text-[13px] font-semibold text-fg hover:text-accent transition-colors cursor-pointer select-none"
                    >
-                     <SlidersHorizontal className="w-3.5 h-3.5 text-blue-400" />
-                     <span>Filtry a Řazení</span>
+                     <SlidersHorizontal className="w-4 h-4 text-accent" />
+                     <span>Filtry a řazení</span>
                      {isAnyFilterActive && (
-                       <span className="bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[9px] font-semibold px-1.5 py-0.5 rounded-full lowercase normal-case">
+                       <span className="badge badge-dot b-accent !h-5 !text-[11px]">
                          aktivní
                        </span>
                      )}
                    </button>
                    <button
                      onClick={() => setIsFiltersExpanded(!isFiltersExpanded)}
-                     className="p-1 hover:bg-slate-800 text-slate-400 hover:text-white rounded transition-colors cursor-pointer"
+                     className="btn btn-icon !w-7 !h-7"
                      title={isFiltersExpanded ? "Sbalit filtry" : "Rozbalit filtry"}
                    >
                      {isFiltersExpanded ? (
@@ -825,13 +823,13 @@ export default function App() {
                       placeholder="Hledat podle ID chatu..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full bg-slate-800 border border-slate-700 rounded-lg py-2 pl-9 pr-8 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors duration-150"
+                      className="input pl-9 pr-8"
                     />
-                    <Search className="w-4 h-4 absolute left-3 top-2.5 text-slate-500 pointer-events-none" />
+                    <Search className="w-4 h-4 absolute left-3 top-2.5 text-fg-subtle pointer-events-none" />
                     {searchQuery && (
                       <button 
                         onClick={() => setSearchQuery('')}
-                        className="absolute right-2.5 top-2.5 text-slate-500 hover:text-slate-300 transition-colors cursor-pointer"
+                        className="absolute right-2.5 top-2.5 text-fg-subtle hover:text-fg transition-colors cursor-pointer"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -852,9 +850,9 @@ export default function App() {
                         placeholder="Hledat ve zprávách..."
                         value={msgSearchInput}
                         onChange={(e) => setMsgSearchInput(e.target.value)}
-                        className="w-full bg-slate-800 border border-slate-700 rounded-lg py-2 pl-9 pr-8 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-colors duration-150"
+                        className="input pl-9 pr-8"
                       />
-                      <MessageSquare className="w-3.5 h-3.5 absolute left-3 top-2.5 text-slate-500 pointer-events-none" />
+                      <MessageSquare className="w-4 h-4 absolute left-3 top-2.5 text-fg-subtle pointer-events-none" />
                       {(msgSearchInput || appliedMsgSearch) && (
                         <button 
                           type="button"
@@ -862,23 +860,23 @@ export default function App() {
                             setMsgSearchInput('');
                             setAppliedMsgSearch('');
                           }}
-                          className="absolute right-2.5 top-2.5 text-slate-500 hover:text-slate-300 transition-colors cursor-pointer"
+                          className="absolute right-2.5 top-2.5 text-fg-subtle hover:text-fg transition-colors cursor-pointer"
                         >
-                          <X className="w-3.5 h-3.5" />
+                          <X className="w-4 h-4" />
                         </button>
                       )}
                     </div>
                     <button
                       type="submit"
-                      className="px-3 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-xs font-bold rounded-lg text-white transition-all cursor-pointer select-none flex items-center justify-center shrink-0 border border-blue-500 hover:shadow-[0_0_10px_rgba(59,130,246,0.25)]"
+                      className="btn btn-secondary shrink-0"
                     >
                       Hledat
                     </button>
                   </form>
                   {appliedMsgSearch && (
-                    <div className="text-[10px] text-blue-400 font-mono flex items-center gap-1 bg-blue-950/30 border border-blue-900/40 rounded px-2 py-1 select-text">
-                      <span className="shrink-0 font-bold uppercase text-[8px] text-blue-500 select-none">Filtr zpráv:</span>
-                      <span className="truncate">"{appliedMsgSearch}"</span>
+                    <div className="text-xs text-accent flex items-center gap-1.5 bg-accent-soft rounded-row px-2.5 py-1.5 select-text">
+                      <span className="shrink-0 font-medium text-fg-muted select-none">Filtr zpráv:</span>
+                      <span className="truncate font-mono">"{appliedMsgSearch}"</span>
                     </div>
                   )}
                 </div>
@@ -886,10 +884,10 @@ export default function App() {
                 {/* Active filters row with close button button */}
                 {isAnyFilterActive && (
                   <div className="flex items-center justify-between text-xs pt-1.5 animate-in fade-in duration-150">
-                    <span className="text-slate-400 font-medium text-[11px]">Aktivní filtry:</span>
+                    <span className="text-fg-muted text-xs">Aktivní filtry:</span>
                     <button
                       onClick={handleClearFilters}
-                      className="text-[11.5px] text-rose-400 hover:text-rose-300 transition-colors cursor-pointer select-none font-sans font-bold flex items-center gap-1"
+                      className="btn btn-danger btn-sm !h-6 !px-2 !text-xs"
                     >
                       <X className="w-3.5 h-3.5 shrink-0" />
                       Zrušit filtry
@@ -898,14 +896,14 @@ export default function App() {
                 )}
 
                 {/* Filter grid */}
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="flex flex-col gap-0.5">
-                    <span className="text-[9px] font-mono text-slate-500 font-bold uppercase tracking-wider">Verze asistentu</span>
+                <div className="grid grid-cols-2 gap-2.5">
+                  <div className="flex flex-col gap-1">
+                    <span className="label">Verze asistentu</span>
                     <div className="relative">
                       <select
                         value={versionFilter}
                         onChange={(e) => setVersionFilter(e.target.value)}
-                        className="w-full text-slate-300 bg-slate-800 text-[11px] pl-2 pr-6 py-1.5 rounded border border-slate-700 focus:outline-none focus:border-blue-500 font-mono cursor-pointer appearance-none"
+                        className="input !h-8 pl-2.5 pr-7 text-[13px] cursor-pointer appearance-none"
                       >
                         <option value="all">Všechny verze</option>
                         {versions.map((v) => (
@@ -914,24 +912,24 @@ export default function App() {
                           </option>
                         ))}
                       </select>
-                      <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2 top-2 pointer-events-none" />
+                      <ChevronDown className="w-3.5 h-3.5 text-fg-subtle absolute right-2.5 top-2.5 pointer-events-none" />
                     </div>
                   </div>
 
-                  <div className="flex flex-col gap-0.5">
-                    <span className="text-[9px] font-mono text-slate-550 font-bold uppercase tracking-wider">Zpětná vazba</span>
+                  <div className="flex flex-col gap-1">
+                    <span className="label">Zpětná vazba</span>
                     <div className="relative">
                       <select
                         value={feedbackFilter}
                         onChange={(e) => setFeedbackFilter(e.target.value as any)}
-                        className="w-full text-slate-300 bg-slate-800 text-[11px] pl-2 pr-6 py-1.5 rounded border border-slate-700 focus:outline-none focus:border-blue-500 font-mono cursor-pointer appearance-none"
+                        className="input !h-8 pl-2.5 pr-7 text-[13px] cursor-pointer appearance-none"
                       >
                         <option value="all">Všechny feedbacky</option>
-                        <option value="positive">Jen pozitivní 👍</option>
-                        <option value="negative">Jen negativní 👎</option>
+                        <option value="positive">Jen pozitivní</option>
+                        <option value="negative">Jen negativní</option>
                         <option value="none">Bez feedbacku</option>
                       </select>
-                      <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2 top-2 pointer-events-none" />
+                      <ChevronDown className="w-3.5 h-3.5 text-fg-subtle absolute right-2.5 top-2.5 pointer-events-none" />
                     </div>
                   </div>
                 </div>
@@ -939,30 +937,30 @@ export default function App() {
                 {/* Sledované období custom selectable dropdown */}
                 <div className="relative">
                   <div className="relative">
-                    <span className="block text-[10px] font-mono text-slate-500 font-bold uppercase tracking-wider mb-0.5">Sledované období</span>
+                    <span className="block label mb-1">Sledované období</span>
                     
                     <button
                       onClick={() => setIsPeriodDropdownOpen(!isPeriodDropdownOpen)}
                       type="button"
-                      className="w-full flex items-center justify-between bg-slate-800 border border-slate-700 px-3 py-1.5 rounded text-[11px] font-medium text-slate-300 hover:text-white hover:bg-slate-750 transition-colors cursor-pointer select-none"
+                      className="input !h-8 flex items-center justify-between px-2.5 text-[13px] hover:bg-surface-3 transition-colors cursor-pointer select-none"
                     >
                       <div className="flex items-center gap-1.5 min-w-0">
                         {periodFilter === 'all' ? (
-                          <Globe className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                          <Globe className="w-3.5 h-3.5 text-fg-muted shrink-0" />
                         ) : periodFilter === 'today' ? (
-                          <History className="w-3.5 h-3.5 text-teal-400 shrink-0" />
+                          <History className="w-3.5 h-3.5 text-fg-muted shrink-0" />
                         ) : periodFilter === 'yesterday' ? (
-                          <History className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                          <History className="w-3.5 h-3.5 text-fg-muted shrink-0" />
                         ) : periodFilter === '2days' ? (
-                          <History className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+                          <History className="w-3.5 h-3.5 text-fg-muted shrink-0" />
                         ) : periodFilter === 'custom' ? (
-                          <SlidersHorizontal className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                          <SlidersHorizontal className="w-3.5 h-3.5 text-fg-muted shrink-0" />
                         ) : (
-                          <Calendar className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                          <Calendar className="w-3.5 h-3.5 text-fg-muted shrink-0" />
                         )}
                         <span className="truncate">{getPeriodLabel()}</span>
                       </div>
-                      <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-150 ${isPeriodDropdownOpen ? 'rotate-180' : ''}`} />
+                      <ChevronDown className={`w-3.5 h-3.5 text-fg-subtle transition-transform duration-150 ${isPeriodDropdownOpen ? 'rotate-180' : ''}`} />
                     </button>
                   </div>
 
@@ -974,7 +972,7 @@ export default function App() {
                         className="fixed inset-0 z-40" 
                         onClick={() => setIsPeriodDropdownOpen(false)}
                       />
-                      <div className="absolute left-0 right-0 top-[52px] z-50 bg-[#141d2e] border border-slate-700 rounded-lg shadow-[0_12px_32px_rgba(0,0,0,0.8)] overflow-y-auto max-h-64 py-1 flex flex-col divide-y divide-slate-800/40">
+                      <div className="absolute left-0 right-0 top-[58px] z-50 glass rounded-card shadow-[0_0_0_.5px_rgba(255,255,255,.14)_inset,0_40px_100px_-20px_rgba(0,0,0,.8)] overflow-y-auto max-h-64 p-1 flex flex-col divide-y divide-line">
                         
                         <div className="py-1">
                           <button
@@ -982,11 +980,11 @@ export default function App() {
                               setPeriodFilter('all');
                               setIsPeriodDropdownOpen(false);
                             }}
-                            className={`w-full text-left px-3 py-1.5 text-xs flex items-center gap-2 transition-colors cursor-pointer ${
-                              periodFilter === 'all' ? 'bg-slate-800 text-white font-semibold' : 'text-slate-300 hover:bg-slate-800/50 hover:text-slate-100'
+                            className={`w-full text-left px-2.5 py-1.5 rounded-row text-[13px] flex items-center gap-2 transition-colors cursor-pointer ${
+                              periodFilter === 'all' ? 'bg-accent-soft text-fg font-medium' : 'text-fg-muted hover:bg-surface-3 hover:text-fg'
                             }`}
                           >
-                            <Globe className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                            <Globe className="w-3.5 h-3.5 text-fg-muted shrink-0" />
                             <span>Vše</span>
                           </button>
 
@@ -995,11 +993,11 @@ export default function App() {
                               setPeriodFilter('today');
                               setIsPeriodDropdownOpen(false);
                             }}
-                            className={`w-full text-left px-3 py-1.5 text-xs flex items-center gap-2 transition-colors cursor-pointer ${
-                              periodFilter === 'today' ? 'bg-slate-800 text-white font-semibold' : 'text-slate-300 hover:bg-slate-800/50 hover:text-slate-100'
+                            className={`w-full text-left px-2.5 py-1.5 rounded-row text-[13px] flex items-center gap-2 transition-colors cursor-pointer ${
+                              periodFilter === 'today' ? 'bg-accent-soft text-fg font-medium' : 'text-fg-muted hover:bg-surface-3 hover:text-fg'
                             }`}
                           >
-                            <History className="w-3.5 h-3.5 text-teal-400 shrink-0" />
+                            <History className="w-3.5 h-3.5 text-fg-muted shrink-0" />
                             <span>Dnes</span>
                           </button>
 
@@ -1008,11 +1006,11 @@ export default function App() {
                               setPeriodFilter('yesterday');
                               setIsPeriodDropdownOpen(false);
                             }}
-                            className={`w-full text-left px-3 py-1.5 text-xs flex items-center gap-2 transition-colors cursor-pointer ${
-                              periodFilter === 'yesterday' ? 'bg-slate-800 text-white font-semibold' : 'text-slate-300 hover:bg-slate-800/50 hover:text-slate-100'
+                            className={`w-full text-left px-2.5 py-1.5 rounded-row text-[13px] flex items-center gap-2 transition-colors cursor-pointer ${
+                              periodFilter === 'yesterday' ? 'bg-accent-soft text-fg font-medium' : 'text-fg-muted hover:bg-surface-3 hover:text-fg'
                             }`}
                           >
-                            <History className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                            <History className="w-3.5 h-3.5 text-fg-muted shrink-0" />
                             <span>Včera</span>
                           </button>
 
@@ -1021,11 +1019,11 @@ export default function App() {
                               setPeriodFilter('2days');
                               setIsPeriodDropdownOpen(false);
                             }}
-                            className={`w-full text-left px-3 py-1.5 text-xs flex items-center gap-2 transition-colors cursor-pointer ${
-                              periodFilter === '2days' ? 'bg-slate-800 text-white font-semibold' : 'text-slate-300 hover:bg-slate-800/50 hover:text-slate-100'
+                            className={`w-full text-left px-2.5 py-1.5 rounded-row text-[13px] flex items-center gap-2 transition-colors cursor-pointer ${
+                              periodFilter === '2days' ? 'bg-accent-soft text-fg font-medium' : 'text-fg-muted hover:bg-surface-3 hover:text-fg'
                             }`}
                           >
-                            <History className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+                            <History className="w-3.5 h-3.5 text-fg-muted shrink-0" />
                             <span>Poslední 2 dny</span>
                           </button>
 
@@ -1034,11 +1032,11 @@ export default function App() {
                               setPeriodFilter('7days');
                               setIsPeriodDropdownOpen(false);
                             }}
-                            className={`w-full text-left px-3 py-1.5 text-xs flex items-center gap-2 transition-colors cursor-pointer ${
-                              periodFilter === '7days' ? 'bg-slate-800 text-white font-semibold' : 'text-slate-300 hover:bg-slate-800/50 hover:text-slate-100'
+                            className={`w-full text-left px-2.5 py-1.5 rounded-row text-[13px] flex items-center gap-2 transition-colors cursor-pointer ${
+                              periodFilter === '7days' ? 'bg-accent-soft text-fg font-medium' : 'text-fg-muted hover:bg-surface-3 hover:text-fg'
                             }`}
                           >
-                            <Calendar className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                            <Calendar className="w-3.5 h-3.5 text-fg-muted shrink-0" />
                             <span>Posledních 7 dní</span>
                           </button>
 
@@ -1047,11 +1045,11 @@ export default function App() {
                               setPeriodFilter('14days');
                               setIsPeriodDropdownOpen(false);
                             }}
-                            className={`w-full text-left px-3 py-1.5 text-xs flex items-center gap-2 transition-colors cursor-pointer ${
-                              periodFilter === '14days' ? 'bg-slate-800 text-white font-semibold' : 'text-slate-300 hover:bg-slate-800/50 hover:text-slate-100'
+                            className={`w-full text-left px-2.5 py-1.5 rounded-row text-[13px] flex items-center gap-2 transition-colors cursor-pointer ${
+                              periodFilter === '14days' ? 'bg-accent-soft text-fg font-medium' : 'text-fg-muted hover:bg-surface-3 hover:text-fg'
                             }`}
                           >
-                            <Calendar className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                            <Calendar className="w-3.5 h-3.5 text-fg-muted shrink-0" />
                             <span>Posledních 14 dní</span>
                           </button>
 
@@ -1060,11 +1058,11 @@ export default function App() {
                               setPeriodFilter('30days');
                               setIsPeriodDropdownOpen(false);
                             }}
-                            className={`w-full text-left px-3 py-1.5 text-xs flex items-center gap-2 transition-colors cursor-pointer ${
-                              periodFilter === '30days' ? 'bg-slate-800 text-white font-semibold' : 'text-slate-300 hover:bg-slate-800/50 hover:text-slate-100'
+                            className={`w-full text-left px-2.5 py-1.5 rounded-row text-[13px] flex items-center gap-2 transition-colors cursor-pointer ${
+                              periodFilter === '30days' ? 'bg-accent-soft text-fg font-medium' : 'text-fg-muted hover:bg-surface-3 hover:text-fg'
                             }`}
                           >
-                            <Calendar className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                            <Calendar className="w-3.5 h-3.5 text-fg-muted shrink-0" />
                             <span>Posledních 30 dní</span>
                           </button>
 
@@ -1073,18 +1071,18 @@ export default function App() {
                               setPeriodFilter('custom');
                               setIsPeriodDropdownOpen(false);
                             }}
-                            className={`w-full text-left px-3 py-1.5 text-xs flex items-center gap-2 transition-colors cursor-pointer ${
-                              periodFilter === 'custom' ? 'bg-slate-800 text-white font-semibold' : 'text-slate-300 hover:bg-slate-800/50 hover:text-slate-100'
+                            className={`w-full text-left px-2.5 py-1.5 rounded-row text-[13px] flex items-center gap-2 transition-colors cursor-pointer ${
+                              periodFilter === 'custom' ? 'bg-accent-soft text-fg font-medium' : 'text-fg-muted hover:bg-surface-3 hover:text-fg'
                             }`}
                           >
-                            <SlidersHorizontal className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                            <SlidersHorizontal className="w-3.5 h-3.5 text-fg-muted shrink-0" />
                             <span>Vlastní rozsah</span>
                           </button>
                         </div>
 
                         {availableMonths.length > 0 && (
                           <div className="py-1">
-                            <div className="px-3 py-1 text-[8px] font-mono uppercase tracking-wider font-bold text-slate-500">
+                            <div className="px-2.5 pt-1.5 pb-1 section-label">
                               Konkrétní měsíc
                             </div>
                             {availableMonths.map((m) => {
@@ -1096,11 +1094,11 @@ export default function App() {
                                     setPeriodFilter(`month_${m.key}`);
                                     setIsPeriodDropdownOpen(false);
                                   }}
-                                  className={`w-full text-left px-3 py-1.5 text-xs flex items-center gap-2 transition-colors cursor-pointer ${
-                                    isSelected ? 'bg-slate-800 text-white font-semibold' : 'text-slate-300 hover:bg-slate-800/50 hover:text-slate-100'
+                                  className={`w-full text-left px-2.5 py-1.5 rounded-row text-[13px] flex items-center gap-2 transition-colors cursor-pointer ${
+                                    isSelected ? 'bg-accent-soft text-fg font-medium' : 'text-fg-muted hover:bg-surface-3 hover:text-fg'
                                   }`}
                                 >
-                                  <Calendar className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+                                  <Calendar className="w-3.5 h-3.5 text-fg-muted shrink-0" />
                                   <span>{m.label}</span>
                                 </button>
                               );
@@ -1114,37 +1112,37 @@ export default function App() {
 
                 {/* Custom range active inputs */}
                 {periodFilter === 'custom' && (
-                  <div className="p-3 bg-slate-950/40 border border-slate-800/60 rounded-lg space-y-2 mt-1 animate-in fade-in slide-in-from-top-1 duration-150 relative z-10">
+                  <div className="p-3 bg-surface-2 hairline rounded-card space-y-2 mt-1 relative z-10">
                     <div className="flex items-center justify-between">
-                      <span className="text-[9px] font-bold text-slate-505 uppercase tracking-wider font-mono">Vlastní rozsah</span>
+                      <span className="section-label">Vlastní rozsah</span>
                       <button 
                         onClick={() => {
                           setPeriodFilter('all');
                           setCustomFromDate('');
                           setCustomToDate('');
                         }}
-                        className="text-[10px] text-rose-450 hover:text-rose-350 cursor-pointer font-semibold"
+                        className="text-xs text-danger hover:opacity-80 cursor-pointer font-medium"
                       >
                         Zrušit
                       </button>
                     </div>
-                    <div className="grid grid-cols-2 gap-2 text-[10px]">
+                    <div className="grid grid-cols-2 gap-2">
                       <div className="flex flex-col gap-0.5">
-                        <span className="text-slate-500 font-mono">Od:</span>
+                        <span className="label">Od:</span>
                         <input
                           type="date"
                           value={customFromDate}
                           onChange={(e) => setCustomFromDate(e.target.value)}
-                          className="bg-slate-805 border border-slate-705 rounded px-1.5 py-1 text-slate-205 focus:outline-none focus:border-blue-500 font-mono"
+                          className="input !h-8 px-2 text-[13px] num"
                         />
                       </div>
                       <div className="flex flex-col gap-0.5">
-                        <span className="text-slate-500 font-mono">Do:</span>
+                        <span className="label">Do:</span>
                         <input
                           type="date"
                           value={customToDate}
                           onChange={(e) => setCustomToDate(e.target.value)}
-                          className="bg-slate-850 border border-slate-700 rounded px-1.5 py-1 text-slate-200 focus:outline-none focus:border-blue-500 font-mono"
+                          className="input !h-8 px-2 text-[13px] num"
                         />
                       </div>
                     </div>
@@ -1152,24 +1150,24 @@ export default function App() {
                 )}
 
                 {/* Sorter tabs */}
-                <div className="flex items-center justify-between text-[10px] uppercase font-bold text-slate-500 tracking-wider pb-3 border-b border-slate-800/40">
+                <div className="flex items-center justify-between gap-2 text-xs text-fg-subtle pb-3 border-b border-line">
                   <span>Seřadit dle:</span>
-                  <div className="flex gap-2.5 font-mono">
+                  <div className="inline-flex p-[3px] gap-0.5 rounded-button bg-white/[.06] hairline">
                     <button
                       onClick={() => handleSortChange('latest_date')}
-                      className={`cursor-pointer ${sortField === 'latest_date' ? 'text-blue-400 font-semibold' : 'hover:text-slate-300'}`}
+                      className={`cursor-pointer px-2.5 py-1 rounded-[7px] text-xs font-medium transition-colors ${sortField === 'latest_date' ? 'bg-surface-3 text-fg shadow-[0_1px_2px_rgba(0,0,0,.4),0_0_0_.5px_rgba(255,255,255,.14)_inset]' : 'text-fg-muted hover:text-fg'}`}
                     >
                       Data {sortField === 'latest_date' && (sortOrder === 'desc' ? '↓' : '↑')}
                     </button>
                     <button
                       onClick={() => handleSortChange('message_count')}
-                      className={`cursor-pointer ${sortField === 'message_count' ? 'text-blue-400 font-semibold' : 'hover:text-slate-300'}`}
+                      className={`cursor-pointer px-2.5 py-1 rounded-[7px] text-xs font-medium transition-colors ${sortField === 'message_count' ? 'bg-surface-3 text-fg shadow-[0_1px_2px_rgba(0,0,0,.4),0_0_0_.5px_rgba(255,255,255,.14)_inset]' : 'text-fg-muted hover:text-fg'}`}
                     >
                       Zpráv {sortField === 'message_count' && (sortOrder === 'desc' ? '↓' : '↑')}
                     </button>
                     <button
                       onClick={() => handleSortChange('chat_id')}
-                      className={`cursor-pointer ${sortField === 'chat_id' ? 'text-blue-400 font-semibold' : 'hover:text-slate-300'}`}
+                      className={`cursor-pointer px-2.5 py-1 rounded-[7px] text-xs font-medium transition-colors ${sortField === 'chat_id' ? 'bg-surface-3 text-fg shadow-[0_1px_2px_rgba(0,0,0,.4),0_0_0_.5px_rgba(255,255,255,.14)_inset]' : 'text-fg-muted hover:text-fg'}`}
                     >
                       ID {sortField === 'chat_id' && (sortOrder === 'desc' ? '↓' : '↑')}
                     </button>
@@ -1177,20 +1175,14 @@ export default function App() {
                 </div>
 
                 {/* Selection Controls Row */}
-                <div className="flex items-center justify-between gap-2 pt-2 text-[10px] uppercase font-bold tracking-wider">
+                <div className="flex items-center justify-between flex-wrap gap-2 pt-2 text-xs">
                   <div className="flex items-center gap-1.5">
                     <button
                       onClick={handleToggleSelectAllFiltered}
-                      className="p-1 select-none cursor-pointer text-slate-400 hover:text-slate-200 transition-colors"
+                      className="p-1 select-none cursor-pointer"
                       title={isAllFilteredChecked ? 'Odznačit vše' : 'Označit vše v tomto filtru'}
                     >
-                      <div
-                        className={`w-3.5 h-3.5 border rounded flex items-center justify-center transition-all duration-150 ${
-                          isAllFilteredChecked
-                            ? 'bg-blue-600 border-blue-500 text-white shadow-[0_0_8px_rgba(59,130,246,0.5)]'
-                            : 'border-slate-600 hover:border-slate-500 bg-slate-905'
-                        }`}
-                      >
+                      <div className="checkbox" data-checked={isAllFilteredChecked}>
                         {isAllFilteredChecked && (
                           <svg className="w-2.5 h-2.5 text-white fill-current stroke-[3]" viewBox="0 0 24 24" stroke="currentColor">
                             <path d="M5 13l4 4L19 7" fill="none" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
@@ -1198,45 +1190,41 @@ export default function App() {
                         )}
                       </div>
                     </button>
-                    <span className="text-slate-450 font-mono font-semibold">
+                    <span className="text-fg-muted num">
                       {checkedChatIds.length > 0 ? `Výběr: ${checkedChatIds.length}` : 'Vybrat vše'}
                     </span>
                   </div>
 
                   {checkedChatIds.length > 0 && (
-                    <div className="flex items-center gap-1.5 normal-case font-mono bg-slate-950/45 p-1 rounded-lg border border-slate-800/40">
+                    <div className="flex items-center gap-1.5">
                       <button
                         onClick={handleCopySelectedIds}
-                        className={`inline-flex items-center gap-1 px-2 py-0.5 text-slate-950 text-[10px] font-bold rounded transition-all cursor-pointer ${
-                          copiedSelectIds 
-                            ? 'bg-emerald-500 hover:bg-emerald-450 hover:shadow-[0_0_10px_rgba(16,185,129,0.3)] text-slate-950' 
-                            : 'bg-indigo-600 hover:bg-indigo-500 hover:shadow-[0_0_10px_rgba(99,102,241,0.3)] text-white'
-                        }`}
+                        className={`btn btn-sm !h-7 ${copiedSelectIds ? 'b-ok' : 'btn-secondary'}`}
                         title="Zkopírovat ID označených chatů do schránky"
                       >
                         {copiedSelectIds ? (
                           <>
-                            <Check className="w-2.5 h-2.5 shrink-0" />
+                            <Check className="shrink-0" />
                             <span>Zkopírováno!</span>
                           </>
                         ) : (
                           <>
-                            <Copy className="w-2.5 h-2.5 shrink-0" />
+                            <Copy className="shrink-0" />
                             <span>Zkopírovat ID ({checkedChatIds.length})</span>
                           </>
                         )}
                       </button>
                       <button
                         onClick={exportSelectedToJSONFile}
-                        className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-600 hover:bg-blue-500 hover:shadow-[0_0_10px_rgba(59,130,246,0.3)] text-slate-950 text-[10px] font-bold rounded transition-all cursor-pointer"
+                        className="btn btn-secondary btn-sm !h-7"
                         title="Exportovat označené chyby"
                       >
-                        <FileDown className="w-2.5 h-2.5 shrink-0" />
+                        <FileDown className="shrink-0" />
                         <span>Exportovat</span>
                       </button>
                       <button
                         onClick={() => setCheckedChatIds([])}
-                        className="px-1.5 py-0.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-[9px] rounded transition-colors cursor-pointer"
+                        className="btn btn-ghost btn-sm !h-7 !text-fg-muted"
                       >
                         Zrušit
                       </button>
@@ -1249,7 +1237,7 @@ export default function App() {
         </div>
 
               {/* Chat list viewport */}
-              <div className="flex-1 overflow-y-auto divide-y divide-slate-900">
+              <div className="flex-1 overflow-y-auto py-1 max-h-[60dvh] md:max-h-none">
                 {filteredChats.length > 0 ? (
                   paginatedChats.map((c) => {
                     const isSelected = c.chat_id === selectedChatId;
@@ -1268,7 +1256,7 @@ export default function App() {
                             e.stopPropagation();
                             handleDeleteChat(c.chat_id);
                           }}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-slate-900 border border-slate-800 text-slate-500 hover:text-rose-400 rounded transition-all opacity-0 group-hover/wrapper:opacity-100 cursor-pointer"
+                          className="absolute right-5 top-1/2 -translate-y-1/2 p-2 bg-surface-2 hairline text-fg-muted hover:text-danger rounded-row transition-all opacity-0 group-hover/wrapper:opacity-100 focus-visible:opacity-100 cursor-pointer"
                           title="Smazat chat"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -1277,7 +1265,7 @@ export default function App() {
                     );
                   })
                 ) : (
-                  <div className="p-8 text-center text-slate-500 text-xs flex flex-col items-center justify-center gap-2">
+                  <div className="p-8 text-center text-fg-muted text-[13px] flex flex-col items-center justify-center gap-2">
                     <p className="font-medium">Nenalezeny žádné chaty</p>
                     <button
                       onClick={() => {
@@ -1285,7 +1273,7 @@ export default function App() {
                         setVersionFilter('all');
                         setFeedbackFilter('all');
                       }}
-                      className="mt-1 px-2.5 py-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded text-[11px] text-slate-300 cursor-pointer"
+                      className="btn btn-secondary btn-sm mt-1"
                     >
                       Resetovat filtry
                     </button>
@@ -1294,32 +1282,32 @@ export default function App() {
               </div>
 
               {/* Sticky bottom pagination panel */}
-              <div className="p-3 bg-slate-900 border-t border-slate-800 text-[11px] flex flex-col gap-2 shrink-0">
-                <div className="flex items-center justify-between text-slate-400 font-mono">
+              <div className="px-4 py-3 border-t border-line text-xs flex flex-col gap-2 shrink-0">
+                <div className="flex items-center justify-between gap-2 text-fg-muted num">
                   <span>
                     {filteredChats.length > 0 ? (
                       <>
-                        Zobrazeno <span className="text-white font-semibold">{startIndex + 1}–{endIndex}</span>{' '}
-                        z <span className="text-blue-400 font-semibold">{filteredChats.length}</span>
+                        Zobrazeno <span className="text-fg font-medium">{(startIndex + 1).toLocaleString('cs-CZ')}–{endIndex.toLocaleString('cs-CZ')}</span>{' '}
+                        z <span className="text-fg font-medium">{filteredChats.length.toLocaleString('cs-CZ')}</span>
                         {filteredChats.length !== chats.length ? (
-                          <span className="text-slate-500 text-[10px]"> (z celkem {chats.length}, {chats.length ? Math.round((filteredChats.length / chats.length) * 100) : 0}%)</span>
+                          <span className="text-fg-subtle"> (z celkem {chats.length.toLocaleString('cs-CZ')}, {chats.length ? Math.round((filteredChats.length / chats.length) * 100) : 0} %)</span>
                         ) : (
-                          <span className="text-slate-500 text-[10px]"> (celkem)</span>
+                          <span className="text-fg-subtle"> (celkem)</span>
                         )}
                       </>
                     ) : (
                       <>
-                        Nenalezeno nic <span className="text-slate-500 text-[10px]">(z celkem {chats.length}, 0%)</span>
+                        Nenalezeno nic <span className="text-fg-subtle">(z celkem {chats.length.toLocaleString('cs-CZ')}, 0 %)</span>
                       </>
                     )}
                   </span>
                   
                   <div className="flex items-center gap-1.5">
-                    <span className="text-slate-500 text-[10px]">Na stranu:</span>
+                    <span className="text-fg-subtle whitespace-nowrap">Na stranu:</span>
                     <select
                       value={pageSize}
                       onChange={(e) => setPageSize(Number(e.target.value))}
-                      className="bg-slate-800 border border-slate-700 rounded text-slate-300 px-1 py-0.5 font-mono text-[10px] focus:outline-none focus:border-blue-500 cursor-pointer"
+                      className="input !h-7 !w-auto px-1.5 text-xs num cursor-pointer"
                     >
                       <option value={10}>10</option>
                       <option value={20}>20</option>
@@ -1330,24 +1318,24 @@ export default function App() {
                 </div>
 
                 {totalPages > 1 && (
-                  <div className="flex items-center justify-between pt-1.5 border-t border-slate-800/40">
+                  <div className="flex items-center justify-between pt-2 border-t border-line">
                     <button
                       onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                       disabled={currentPage === 1}
-                      className="px-2 py-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded disabled:opacity-30 disabled:hover:bg-slate-800 disabled:cursor-not-allowed transition-colors flex items-center gap-1 select-none cursor-pointer"
+                      className="btn btn-secondary btn-sm"
                     >
                       <ChevronLeft className="w-3 h-3" />
                       <span>Předchozí</span>
                     </button>
 
-                    <div className="font-mono text-slate-400">
-                      <span className="text-white font-semibold">{currentPage}</span> / <span className="text-slate-450">{totalPages}</span>
+                    <div className="text-fg-muted num">
+                      <span className="text-fg font-medium">{currentPage}</span> / <span>{totalPages}</span>
                     </div>
 
                     <button
                       onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                       disabled={currentPage === totalPages}
-                      className="px-2 py-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded disabled:opacity-30 disabled:hover:bg-slate-800 disabled:cursor-not-allowed transition-colors flex items-center gap-1 select-none cursor-pointer"
+                      className="btn btn-secondary btn-sm"
                     >
                       <span>Další</span>
                       <ChevronRight className="w-3 h-3" />
@@ -1358,48 +1346,48 @@ export default function App() {
             </aside>
 
             {/* RIGHT COLUMN: Chat Detailed Messages Flow */}
-            <section className="flex-1 bg-[#0d131e] flex flex-col overflow-hidden relative">
+            <section className="flex-1 flex flex-col overflow-hidden relative h-[85dvh] md:h-auto">
               {selectedChat ? (
                 <div className="flex flex-col h-full overflow-hidden">
                   
                   {/* Detail Header in style of Clean Minimalism sample */}
-                  <div className="p-6 border-b border-slate-800 flex items-center justify-between bg-[#0d131e] shrink-0">
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-full bg-blue-500/20 border border-blue-500/50 flex items-center justify-center text-blue-400 font-bold uppercase italic font-mono">
+                  <div className="px-4 sm:px-6 py-4 border-b border-line flex flex-wrap items-center justify-between gap-3 shrink-0">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-10 h-10 rounded-full bg-accent-soft flex items-center justify-center text-accent text-[13px] font-semibold font-mono shrink-0">
                         {selectedChat.chat_id.slice(-2) || 'CH'}
                       </div>
                       <div>
-                        <h2 className="text-white font-semibold leading-tight text-sm sm:text-base flex items-center gap-2">
+                        <h2 className="font-semibold tracking-tight leading-tight text-base sm:text-xl flex items-center gap-2">
                           Konverzace #{selectedChat.chat_id}
                         </h2>
-                        <p className="text-xs text-slate-500">
-                          Verze: <span className="font-mono text-slate-400">{selectedChat.nejvyssi_verze}</span> • Celkem {selectedChat.totalMessages} zpráv
+                        <p className="text-[13px] text-fg-muted num mt-0.5">
+                          Verze: <span className="font-mono text-fg">{selectedChat.nejvyssi_verze}</span> • Celkem {selectedChat.totalMessages.toLocaleString('cs-CZ')} zpráv
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       {/* Interactive inline search within active conversation */}
-                      <div className="relative flex items-center bg-slate-900 border border-slate-800 focus-within:border-blue-500/80 rounded-lg px-2.5 py-1.5 transition-all text-xs">
-                        <Search className="w-3.5 h-3.5 text-slate-500 mr-2 shrink-0" />
+                      <div className="relative flex items-center h-9 rounded-full bg-glass hairline focus-within:shadow-[0_0_0_1px_#0a84ff_inset,0_0_0_3px_rgba(10,132,255,.45)] px-3.5 transition-shadow text-[13px]">
+                        <Search className="w-4 h-4 text-fg-subtle mr-2 shrink-0" />
                         <input
                           type="text"
                           placeholder="Hledat v chatu..."
                           value={chatSearchQuery}
                           onChange={handleChatSearchChange}
                           onKeyDown={handleChatSearchKeyDown}
-                          className="bg-transparent border-none outline-none text-xs text-white placeholder-slate-550 w-24 sm:w-36 md:w-44 font-sans focus:ring-0 p-0"
+                          className="bg-transparent border-none outline-none text-[13px] text-fg placeholder:text-fg-subtle caret-accent w-28 sm:w-36 md:w-44 focus:shadow-none p-0"
                           title="Vyhledávat v této konverzaci. Navigace: Šipky Nahoru/Dolů nebo Enter"
                         />
                         {chatSearchQuery && (
-                          <div className="flex items-center gap-1 ml-2 pl-2 border-l border-slate-800 shrink-0 select-none">
-                            <span className="text-[10px] text-slate-450 font-mono font-medium min-w-[28px] text-center">
+                          <div className="flex items-center gap-0.5 ml-2 pl-2 border-l border-line shrink-0 select-none">
+                            <span className="text-xs text-fg-muted num min-w-[32px] text-center">
                               {chatSearchResults.length > 0 ? `${activeSearchIndex + 1}/${chatSearchResults.length}` : '0/0'}
                             </span>
                             <button
                               onClick={handlePrevSearchOccur}
                               disabled={chatSearchResults.length === 0}
-                              className="p-0.5 hover:bg-slate-800 disabled:opacity-20 text-slate-400 hover:text-white rounded transition-colors cursor-pointer"
+                              className="p-1 hover:bg-white/[.07] disabled:opacity-30 text-fg-muted hover:text-fg rounded-[6px] transition-colors cursor-pointer"
                               title="Předchozí výskyt (Šipka Nahoru)"
                             >
                               <ArrowUp className="w-3" style={{ height: '12px' }} />
@@ -1407,14 +1395,14 @@ export default function App() {
                             <button
                               onClick={handleNextSearchOccur}
                               disabled={chatSearchResults.length === 0}
-                              className="p-0.5 hover:bg-slate-800 disabled:opacity-20 text-slate-400 hover:text-white rounded transition-colors cursor-pointer"
+                              className="p-1 hover:bg-white/[.07] disabled:opacity-30 text-fg-muted hover:text-fg rounded-[6px] transition-colors cursor-pointer"
                               title="Další výskyt (Šipka Dolů / Enter)"
                             >
                               <ArrowDown className="w-3" style={{ height: '12px' }} />
                             </button>
                             <button
                               onClick={handleClearChatSearch}
-                              className="p-0.5 hover:bg-slate-800 text-slate-400 hover:text-rose-400 rounded transition-colors cursor-pointer"
+                              className="p-1 hover:bg-white/[.07] text-fg-muted hover:text-danger rounded-[6px] transition-colors cursor-pointer"
                               title="Zrušit hledání"
                             >
                               <X className="w-3" style={{ height: '12px' }} />
@@ -1424,18 +1412,20 @@ export default function App() {
                       </div>
 
                       {selectedChat.hasPositiveFeedback && (
-                        <span className="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-emerald-950/80 border border-emerald-900/40 text-emerald-400 text-[10px] font-mono font-semibold">
-                          👍 Oceněn
+                        <span className="hidden lg:inline-flex badge b-ok">
+                          <ThumbsUp className="w-3 h-3" />
+                          Oceněn
                         </span>
                       )}
                       {selectedChat.hasNegativeFeedback && (
-                        <span className="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-rose-955/80 border border-rose-900/40 text-rose-400 text-[10px] font-mono font-semibold">
-                          👎 Stížnost
+                        <span className="hidden lg:inline-flex badge b-err">
+                          <ThumbsDown className="w-3 h-3" />
+                          Stížnost
                         </span>
                       )}
                       <button
                         onClick={() => handleDeleteChat(selectedChat.chat_id)}
-                        className="p-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-lg text-slate-400 hover:text-rose-400 transition-colors cursor-pointer active:scale-90"
+                        className="btn btn-secondary !w-9 !px-0 !text-fg-muted hover:!text-danger"
                         title="Odstranit"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -1444,7 +1434,7 @@ export default function App() {
                   </div>
 
                   {/* Dynamic stats line just below header */}
-                  <div className="px-6 py-2 bg-slate-900/40 border-b border-slate-800/60 hidden sm:flex items-center justify-between text-[11px] font-mono text-slate-550">
+                  <div className="px-6 py-2 border-b border-line hidden sm:flex items-center justify-between gap-4 text-xs text-fg-subtle num">
                     <div className="flex gap-4">
                       <span>První kontakt: {selectedChat.firstMessageDate?.toLocaleString('cs-CZ')}</span>
                       <span>Poslední aktivita: {selectedChat.lastMessageDate?.toLocaleString('cs-CZ')}</span>
@@ -1454,20 +1444,20 @@ export default function App() {
 
                   {/* Audit Navigation Scroll Bar */}
                   {(selectedChatPositiveMessages.length > 0 || selectedChatNegativeMessages.length > 0) && (
-                    <div className="px-6 py-2.5 bg-slate-950 border-b border-slate-800/60 flex flex-wrap items-center justify-between gap-3 shrink-0">
+                    <div className="px-4 sm:px-6 py-2.5 border-b border-line flex flex-wrap items-center justify-between gap-3 shrink-0">
                       <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">Rychlé přeskoky na zpětnou vazbu:</span>
+                        <span className="text-xs text-fg-muted">Rychlé přeskoky na zpětnou vazbu:</span>
                       </div>
                       <div className="flex items-center gap-2 flex-wrap">
                         {selectedChatPositiveMessages.length > 0 && (
                           <button
                             onClick={handleScrollToPositive}
-                            className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-950/80 hover:bg-emerald-900/60 border border-emerald-950 text-emerald-400 text-xs font-mono font-semibold rounded-lg transition-colors cursor-pointer active:scale-95"
+                            className="btn btn-sm b-ok hover:brightness-125"
                             title="Posunout na další pozitivní hodnocení"
                           >
-                            <ThumbsUp className="w-3 h-3 fill-current text-emerald-550" />
+                            <ThumbsUp className="w-3.5 h-3.5" />
                             <span>Přejít na pozitivní ({selectedChatPositiveMessages.length})</span>
-                            <span className="bg-emerald-900/85 px-1.5 py-0.2 rounded text-[9px] text-emerald-300">
+                            <span className="num text-xs opacity-80">
                               {(currentPositiveIdx % selectedChatPositiveMessages.length) + 1}/{selectedChatPositiveMessages.length}
                             </span>
                           </button>
@@ -1476,12 +1466,12 @@ export default function App() {
                         {selectedChatNegativeMessages.length > 0 && (
                           <button
                             onClick={handleScrollToNegative}
-                            className="inline-flex items-center gap-1.5 px-3 py-1 bg-rose-955/85 hover:bg-rose-900/65 border border-rose-950 text-rose-405 text-xs font-mono font-semibold rounded-lg transition-colors cursor-pointer active:scale-95"
+                            className="btn btn-sm b-err hover:brightness-125"
                             title="Posunout na další negativní hodnocení / stížnost"
                           >
-                            <ThumbsDown className="w-3 h-3 fill-current text-rose-550" />
+                            <ThumbsDown className="w-3.5 h-3.5" />
                             <span>Přejít na negativní ({selectedChatNegativeMessages.length})</span>
-                            <span className="bg-rose-900/85 px-1.5 py-0.2 rounded text-[9px] text-rose-300">
+                            <span className="num text-xs opacity-80">
                               {(currentNegativeIdx % selectedChatNegativeMessages.length) + 1}/{selectedChatNegativeMessages.length}
                             </span>
                           </button>
@@ -1491,7 +1481,7 @@ export default function App() {
                   )}
 
                   {/* Conversation messages scroll window */}
-                  <div className="flex-1 p-8 space-y-6 overflow-y-auto bg-slate-950/20">
+                  <div className="flex-1 px-4 py-5 sm:p-8 space-y-6 overflow-y-auto">
                     {selectedChat.messages.map((message) => (
                       <MessageBubble 
                         key={message.message_id} 
@@ -1503,24 +1493,24 @@ export default function App() {
                   </div>
 
                   {/* Audit Footer Info */}
-                  <div className="p-6 border-t border-slate-800 bg-slate-900/30 shrink-0">
-                    <div className="bg-slate-800/60 border border-slate-700/60 rounded-lg p-3 flex items-center justify-between gap-3">
+                  <div className="px-4 sm:px-6 py-3 border-t border-line shrink-0">
+                    <div className="flex items-center justify-between gap-3">
                       <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-blue-500/80"></span>
-                        <span className="text-slate-400 text-xs font-sans">Prohlížíte auditní záznam konverzace. Zpětná vazba je načtena přímo ze statických logů.</span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-info shrink-0"></span>
+                        <span className="text-fg-subtle text-xs">Prohlížíte auditní záznam konverzace. Zpětná vazba je načtena přímo ze statických logů.</span>
                       </div>
-                      <HelpCircle className="w-4 h-4 text-slate-500" />
+                      <HelpCircle className="w-4 h-4 text-fg-subtle shrink-0" />
                     </div>
                   </div>
 
                 </div>
               ) : (
                 /* Beautiful Empty Block */
-                <div className="flex-1 flex flex-col items-center justify-center p-8 text-center text-slate-500 gap-4">
-                  <Compass className="w-12 h-12 text-blue-500/50 animate-spin-slow" />
+                <div className="flex-1 flex flex-col items-center justify-center p-8 text-center gap-3">
+                  <span className="w-[52px] h-[52px] rounded-full bg-accent-soft text-accent grid place-items-center"><Compass className="w-6 h-6" strokeWidth={1.8} /></span>
                   <div>
-                    <h3 className="text-white font-semibold text-base">Zvolte konverzaci</h3>
-                    <p className="text-xs text-slate-500 mt-1 max-w-sm">
+                    <h3 className="text-xl font-semibold tracking-tight">Zvolte konverzaci</h3>
+                    <p className="text-sm text-fg-muted mt-1 max-w-sm">
                       Pro zobrazení interaktivního toku zpráv s doporučenými Datart produkty, auditními údaji a statistikami vyberte chat z levého sloupce.
                     </p>
                   </div>
@@ -1531,22 +1521,22 @@ export default function App() {
           </main>
 
           {/* Stats Section row */}
-          <div className="px-6 py-3 bg-slate-900/50 border-t border-slate-800 shrink-0">
+          <div className="px-4 sm:px-6 py-3 border-t border-line shrink-0">
             <StatsSection chats={filteredChats} totalChatsCountAll={chats.length} />
           </div>
         </>
       )}
 
       {/* Bottom Status Bar matching exactly the sample */}
-      <footer className="h-8 bg-blue-950/20 border-t border-slate-800 flex items-center justify-between px-6 text-[10px] text-slate-500 uppercase tracking-widest shrink-0 font-mono">
+      <footer className="min-h-8 py-1.5 border-t border-line flex flex-wrap items-center justify-between gap-x-4 gap-y-0.5 px-4 sm:px-6 text-xs text-fg-subtle shrink-0">
         <div className="flex gap-4">
-          <span>Status: <span className="text-green-400 uppercase font-semibold">Synchronizováno</span></span>
-          <span>Aktivní filtr: <span className="text-slate-300 font-bold">
+          <span>Status: <span className="text-success">Synchronizováno</span></span>
+          <span>Aktivní filtr: <span className="text-fg-muted">
             {chats.length === 0 ? 'Žádná data' : (searchQuery ? 'Vyhledávání' : (versionFilter !== 'all' || feedbackFilter !== 'all' ? 'Aktivní' : 'Vypnut'))}
           </span></span>
         </div>
         <div>
-          © 2026 DATART Inspector — Made with Precision
+          AI Statistiky · © 2026 Jan Kuchař
         </div>
       </footer>
     </div>

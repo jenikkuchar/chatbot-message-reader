@@ -22,12 +22,12 @@ export default function ProductCarousel({ products }: ProductCarouselProps) {
   };
 
   return (
-    <div className="my-4 border border-slate-800 bg-slate-950/80 rounded-xl overflow-hidden shadow-2xl backdrop-blur-sm">
+    <div className="my-4 bg-surface-2 hairline rounded-card overflow-hidden">
       {/* Header of carousel */}
-      <div className="px-4 py-2.5 bg-slate-900 border-b border-slate-800 flex items-center justify-between">
+      <div className="px-4 py-2 border-b border-line flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span className="text-xs font-mono tracking-wider uppercase text-emerald-400 font-semibold">
+          <span className="w-1.5 h-1.5 rounded-full bg-accent"></span>
+          <span className="text-[13px] font-semibold num">
             Doporučené produkty ({products.length})
           </span>
         </div>
@@ -35,16 +35,16 @@ export default function ProductCarousel({ products }: ProductCarouselProps) {
           <div className="flex gap-1">
             <button
               onClick={prevProduct}
-              className="px-2 py-1 text-xs font-bold text-slate-400 bg-slate-800 hover:bg-slate-700 rounded-md transition-colors duration-150 cursor-pointer"
+              className="btn btn-secondary btn-sm"
             >
               ←
             </button>
-            <span className="text-xs text-slate-500 px-2 py-1 bg-slate-900 rounded font-mono">
+            <span className="text-xs text-fg-subtle px-2 py-1 num self-center">
               {activeIndex + 1}/{products.length}
             </span>
             <button
               onClick={nextProduct}
-              className="px-2 py-1 text-xs font-bold text-slate-400 bg-slate-800 hover:bg-slate-700 rounded-md transition-colors duration-150 cursor-pointer"
+              className="btn btn-secondary btn-sm"
             >
               →
             </button>
@@ -80,15 +80,15 @@ export default function ProductCarousel({ products }: ProductCarouselProps) {
                 {/* Title & category */}
                 <div>
                   {prod.category && (
-                    <span className="text-[10px] font-mono font-medium uppercase tracking-widest text-slate-400 px-1.5 py-0.5 bg-slate-900 rounded border border-slate-800">
+                    <span className="badge b-neutral">
                       {prod.category}
                     </span>
                   )}
-                  <h3 className="text-base sm:text-lg font-sans font-semibold text-slate-100 tracking-tight mt-1.5 hover:text-emerald-400 transition-colors duration-150">
+                  <h3 className="text-base sm:text-lg font-semibold tracking-tight mt-2">
                     {prod.name}
                   </h3>
                   {prod.id && (
-                    <p className="text-[10px] text-slate-500 font-mono mt-0.5">
+                    <p className="text-xs text-fg-subtle font-mono mt-0.5">
                       Art.ID: {prod.id} {prod.articleType ? `| Typ: ${prod.articleType}` : ''}
                     </p>
                   )}
@@ -97,14 +97,14 @@ export default function ProductCarousel({ products }: ProductCarouselProps) {
                 {/* Rating */}
                 {prod.rating && (
                   <div className="flex items-center gap-2 -mt-2">
-                    <div className="flex items-center text-amber-500">
-                      <Star className="w-4 h-4 fill-amber-500 stroke-amber-500" />
-                      <span className="text-xs font-bold font-mono text-amber-400 ml-1">
+                    <div className="flex items-center text-warning">
+                      <Star className="w-4 h-4 fill-current" />
+                      <span className="text-[13px] font-semibold num ml-1">
                         {prod.rating}
                       </span>
                     </div>
                     {prod.ratingCount && (
-                      <span className="text-[11px] text-slate-500 font-sans">
+                      <span className="text-xs text-fg-subtle num">
                         ({prod.ratingCount} hodnocení)
                       </span>
                     )}
@@ -116,19 +116,19 @@ export default function ProductCarousel({ products }: ProductCarouselProps) {
                   {/* Left Column: Description & Features */}
                   <div className="flex flex-col gap-3">
                     {prod.desc && (
-                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans italic border-l-2 border-slate-800 pl-3">
+                      <p className="text-[13px] sm:text-sm text-fg-muted leading-relaxed border-l-2 border-line-strong pl-3">
                         "{prod.desc}"
                       </p>
                     )}
 
                     {featureList.length > 0 && (
                       <div className="space-y-1.5 mt-1">
-                        <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest block font-bold">
+                        <span className="section-label block">
                           Klíčové vlastnosti:
                         </span>
                         {featureList.map((feature, fIdx) => (
-                          <div key={fIdx} className="flex items-start gap-2 text-xs text-slate-300">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                          <div key={fIdx} className="flex items-start gap-2 text-[13px] text-fg">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-success shrink-0 mt-0.5" />
                             <span>{feature}</span>
                           </div>
                         ))}
@@ -137,43 +137,43 @@ export default function ProductCarousel({ products }: ProductCarouselProps) {
                   </div>
 
                   {/* Right Column: Pricing & Quick Simulated Action */}
-                  <div className="bg-slate-900/60 p-4 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-4">
+                  <div className="card p-4 flex flex-col justify-between gap-4">
                     <div>
                       <div className="flex items-baseline gap-2 flex-wrap">
                         {prod.originalPrice && origPrice > currentPrice && (
-                          <span className="text-xs text-slate-500 line-through font-mono">
+                          <span className="text-xs text-fg-subtle line-through num">
                             {origPrice.toLocaleString('cs-CZ')} Kč
                           </span>
                         )}
                         {savingsPercent > 0 && (
-                          <span className="text-[10px] font-mono bg-rose-950 text-rose-400 border border-rose-900/50 px-1.5 py-0.5 rounded font-bold">
-                            Ušetříte {savingsPercent}%
+                          <span className="badge b-err num">
+                            Ušetříte {savingsPercent} %
                           </span>
                         )}
                       </div>
 
-                      <div className="text-2xl sm:text-3xl font-sans font-bold text-slate-100 mt-1">
+                      <div className="text-2xl sm:text-[28px] font-semibold tracking-tight num mt-1">
                         {currentPrice > 0 ? `${currentPrice.toLocaleString('cs-CZ')} Kč` : 'Cena na dotaz'}
                       </div>
 
                       {savings > 0 && (
-                        <div className="text-slate-400 text-xs font-sans mt-1 flex items-center gap-1">
-                          <Tag className="w-3.5 h-3.5 text-rose-500" />
+                        <div className="text-fg-muted text-xs num mt-1 flex items-center gap-1">
+                          <Tag className="w-3.5 h-3.5 text-danger" />
                           <span>Sleva {savings.toLocaleString('cs-CZ')} Kč k okamžitému nákupu</span>
                         </div>
                       )}
                     </div>
 
                     <div className="space-y-2 pt-2">
-                      <div className="text-[10px] text-slate-400 flex items-center gap-1.5">
-                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+                      <div className="text-xs text-fg-muted flex items-center gap-1.5">
+                        <ShieldCheck className="w-3.5 h-3.5 text-success" />
                         <span>Originální distribuce Datart</span>
                       </div>
                       <a
                         href={`https://www.datart.cz/vyhledavani?q=${encodeURIComponent(prod.name)}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full py-2 px-3 text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-sans rounded-lg flex items-center justify-center gap-1.5 transition-all duration-150 select-none border border-emerald-500/30 font-bold active:scale-95"
+                        className="btn btn-secondary w-full !text-fg hover:!text-fg"
                       >
                         <ShoppingCart className="w-3.5 h-3.5" />
                         Koupit na Datart.cz
@@ -190,13 +190,13 @@ export default function ProductCarousel({ products }: ProductCarouselProps) {
 
       {/* Footer selector dots */}
       {products.length > 1 && (
-        <div className="px-4 py-3 bg-slate-900/40 border-t border-slate-800/50 flex justify-center gap-1.5">
+        <div className="px-4 py-3 border-t border-line flex justify-center gap-1.5">
           {products.map((_, idx) => (
             <button
               key={idx}
               onClick={() => setActiveIndex(idx)}
               className={`w-2 h-2 rounded-full cursor-pointer transition-all duration-300 ${
-                idx === activeIndex ? 'bg-emerald-400 w-4' : 'bg-slate-700 hover:bg-slate-500'
+                idx === activeIndex ? 'bg-accent w-4' : 'bg-surface-3 hover:bg-line-3'
               }`}
               aria-label={`Zobrazit produkt ${idx + 1}`}
             />

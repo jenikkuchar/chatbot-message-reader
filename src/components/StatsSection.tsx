@@ -31,95 +31,88 @@ export default function StatsSection({ chats, totalChatsCountAll }: StatsSection
     });
   });
 
-  const avgMessages = totalChats > 0 ? (totalMessages / totalChats).toFixed(1) : '0';
+  const avgMessages = totalChats > 0 ? (totalMessages / totalChats).toLocaleString('cs-CZ', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) : '0';
   const totalFeedbackCount = positiveCount + negativeCount;
   const positiveRatioPercent = totalFeedbackCount > 0 
     ? Math.round((positiveCount / totalFeedbackCount) * 100) 
     : 0;
 
   const isFiltered = totalChatsCountAll !== undefined && totalChats !== totalChatsCountAll;
+  const fmt = (n: number) => n.toLocaleString('cs-CZ');
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
       {/* Total Chats */}
-      <div className="p-4 bg-slate-900/30 border border-slate-800 rounded-lg">
-        <div className="flex justify-between items-start">
-          <div>
-            <span className="text-slate-500 text-[9px] font-mono tracking-widest uppercase font-bold">
+      <div className="card px-4 py-3.5">
+        <div className="flex justify-between items-start gap-2">
+          <div className="min-w-0">
+            <span className="text-xs text-fg-muted">
               {isFiltered ? 'Nalezeno chatů' : 'Celkem chatů'}
             </span>
-            <div className="text-xl font-bold text-white mt-1 font-sans">
+            <div className="text-[26px] leading-tight font-semibold tracking-tight num mt-0.5">
               {isFiltered ? (
                 <>
-                  <span className="text-blue-400 font-bold">{totalChats}</span>
-                  <span className="text-xs text-slate-500 font-normal font-mono"> / {totalChatsCountAll} </span>
-                  <span className="text-xs text-blue-500 font-mono font-normal">({totalChatsCountAll ? Math.round((totalChats / totalChatsCountAll) * 100) : 0}%)</span>
+                  <span>{fmt(totalChats)}</span>
+                  <span className="text-sm text-fg-subtle font-normal"> / {fmt(totalChatsCountAll ?? 0)} </span>
+                  <span className="text-sm text-accent font-normal">({totalChatsCountAll ? Math.round((totalChats / totalChatsCountAll) * 100) : 0} %)</span>
                 </>
               ) : (
-                totalChats
+                fmt(totalChats)
               )}
             </div>
           </div>
-          <div className="text-slate-400">
-            <MessageSquare className="w-4 h-4" />
-          </div>
+          <MessageSquare className="w-4 h-4 text-accent shrink-0" />
         </div>
-        <div className="text-[10px] text-slate-500 font-mono mt-2">
+        <div className="text-xs text-fg-subtle num mt-1">
           <span>Průměr {avgMessages} replik / chat</span>
         </div>
       </div>
 
       {/* Positive Feedback Ratio */}
-      <div className="p-4 bg-slate-900/30 border border-slate-800 rounded-lg">
-        <div className="flex justify-between items-start">
-          <div>
-            <span className="text-slate-500 text-[9px] font-mono tracking-widest uppercase font-bold">Spokojenost AI</span>
-            <div className="text-xl font-bold text-white mt-1 font-sans">
-              {totalFeedbackCount > 0 ? `${positiveRatioPercent}%` : 'N/A'}
+      <div className="card px-4 py-3.5">
+        <div className="flex justify-between items-start gap-2">
+          <div className="min-w-0">
+            <span className="text-xs text-fg-muted">Spokojenost AI</span>
+            <div className="text-[26px] leading-tight font-semibold tracking-tight num mt-0.5">
+              {totalFeedbackCount > 0 ? `${positiveRatioPercent} %` : 'N/A'}
             </div>
           </div>
-          <div className="text-emerald-500">
-            <ThumbsUp className="w-4 h-4" />
-          </div>
+          <ThumbsUp className="w-4 h-4 text-success shrink-0" />
         </div>
-        <div className="text-[10px] text-slate-500 font-mono mt-2 flex items-center gap-1.5">
-          <span>👍 {positiveCount}</span>
-          <span className="text-slate-800">|</span>
-          <span>👎 {negativeCount}</span>
+        <div className="text-xs text-fg-subtle num mt-1 flex items-center gap-2">
+          <span className="inline-flex items-center gap-1 text-success"><ThumbsUp className="w-3 h-3" />{fmt(positiveCount)}</span>
+          <span className="text-line-3">|</span>
+          <span className="inline-flex items-center gap-1 text-danger"><ThumbsDown className="w-3 h-3" />{fmt(negativeCount)}</span>
         </div>
       </div>
 
       {/* Total processed messages */}
-      <div className="p-4 bg-slate-900/30 border border-slate-800 rounded-lg">
-        <div className="flex justify-between items-start">
-          <div>
-            <span className="text-slate-500 text-[9px] font-mono tracking-widest uppercase font-bold">Počet Zpráv</span>
-            <div className="text-xl font-bold text-white mt-1 font-sans">{totalMessages}</div>
+      <div className="card px-4 py-3.5">
+        <div className="flex justify-between items-start gap-2">
+          <div className="min-w-0">
+            <span className="text-xs text-fg-muted">Počet zpráv</span>
+            <div className="text-[26px] leading-tight font-semibold tracking-tight num mt-0.5">{fmt(totalMessages)}</div>
           </div>
-          <div className="text-blue-400">
-            <Layers className="w-4 h-4" />
-          </div>
+          <Layers className="w-4 h-4 text-accent shrink-0" />
         </div>
-        <div className="text-[10px] text-slate-500 font-mono mt-2">
-          <span>{chats.reduce((acc, c) => acc + c.humanMessagesCount, 0)} uživatel • {chats.reduce((acc, c) => acc + c.aiMessagesCount, 0)} AI</span>
+        <div className="text-xs text-fg-subtle num mt-1">
+          <span>{fmt(chats.reduce((acc, c) => acc + c.humanMessagesCount, 0))} uživatel • {fmt(chats.reduce((acc, c) => acc + c.aiMessagesCount, 0))} AI</span>
         </div>
       </div>
 
       {/* System Versions */}
-      <div className="p-4 bg-slate-900/30 border border-slate-800 rounded-lg">
-        <div className="flex justify-between items-start">
-          <div>
-            <span className="text-slate-500 text-[9px] font-mono tracking-widest uppercase font-bold">Aktivní Verze</span>
-            <div className="text-xs font-mono font-bold text-slate-300 mt-1.5 truncate">
+      <div className="card px-4 py-3.5">
+        <div className="flex justify-between items-start gap-2">
+          <div className="min-w-0">
+            <span className="text-xs text-fg-muted">Aktivní verze</span>
+            <div className="text-[13px] font-mono text-fg mt-2 truncate">
               {Array.from(versionsSet).join(', ') || 'Žádná'}
             </div>
           </div>
-          <div className="text-slate-500">
-            <Activity className="w-4 h-4" />
-          </div>
+          <Activity className="w-4 h-4 text-fg-subtle shrink-0" />
         </div>
-        <div className="text-[10px] text-slate-500 font-mono mt-2">
-          <span>{versionsSet.size} jedinečných verzí</span>
+        <div className="text-xs text-fg-subtle num mt-1.5">
+          <span>{fmt(versionsSet.size)} jedinečných verzí</span>
         </div>
       </div>
     </div>
