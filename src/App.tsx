@@ -672,10 +672,10 @@ export default function App() {
           <span className="ver hidden sm:inline">v1.1</span>
         </div>
 
-        <div className="flex items-center gap-4 min-w-0">
+        <div className="flex items-center gap-2 min-w-0">
           {chats.length > 0 && !isLoading && (
             <>
-              <span className="hidden md:inline text-xs text-fg-subtle num whitespace-nowrap">
+              <span className="hidden md:inline mr-2 text-xs text-fg-subtle num whitespace-nowrap">
                 {isAnyFilterActive ? (
                   <>Nalezeno: <span className="text-fg font-medium">{filteredChats.length.toLocaleString('cs-CZ')}</span> z {chats.length.toLocaleString('cs-CZ')} chatů <span className="text-accent">({chats.length ? Math.round((filteredChats.length / chats.length) * 100) : 0} %)</span></>
                 ) : (
@@ -691,6 +691,18 @@ export default function App() {
               </button>
             </>
           )}
+
+          {/* Přepínač režimu – vždy poslední prvek lišty; klik, ⌘⇧L i uložení volby řeší brand/theme.js */}
+          <button
+            type="button"
+            className="theme-toggle"
+            data-theme-toggle
+            aria-label="Přepnout světlý / tmavý režim"
+            title="Přepnout režim (⌘⇧L)"
+          >
+            <svg className="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+            <svg className="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg>
+          </button>
         </div>
       </header>
 
@@ -964,7 +976,7 @@ export default function App() {
                         className="fixed inset-0 z-40" 
                         onClick={() => setIsPeriodDropdownOpen(false)}
                       />
-                      <div className="absolute left-0 right-0 top-[58px] z-50 glass rounded-card shadow-[0_0_0_.5px_rgba(255,255,255,.14)_inset,0_40px_100px_-20px_rgba(0,0,0,.8)] overflow-y-auto max-h-64 p-1 flex flex-col divide-y divide-line">
+                      <div className="absolute left-0 right-0 top-[58px] z-50 bg-surface-1 rounded-card shadow-[var(--jk-shadow-pop)] overflow-y-auto max-h-64 p-1 flex flex-col divide-y divide-line">
                         
                         <div className="py-1">
                           <button
@@ -1144,22 +1156,22 @@ export default function App() {
                 {/* Sorter tabs */}
                 <div className="flex items-center justify-between gap-2 text-xs text-fg-subtle pb-3 border-b border-line">
                   <span>Seřadit dle:</span>
-                  <div className="inline-flex p-[3px] gap-0.5 rounded-button bg-white/[.06] hairline">
+                  <div className="inline-flex p-[3px] gap-0.5 rounded-button bg-fill hairline">
                     <button
                       onClick={() => handleSortChange('latest_date')}
-                      className={`cursor-pointer px-2.5 py-1 rounded-[7px] text-xs font-medium transition-colors ${sortField === 'latest_date' ? 'bg-surface-3 text-fg shadow-[0_1px_2px_rgba(0,0,0,.4),0_0_0_.5px_rgba(255,255,255,.14)_inset]' : 'text-fg-muted hover:text-fg'}`}
+                      className={`cursor-pointer px-2.5 py-1 rounded-[7px] text-xs font-medium transition-colors ${sortField === 'latest_date' ? 'bg-surface-3 text-fg shadow-[0_1px_2px_var(--jk-shadow-color),0_0_0_.5px_var(--color-line-strong)_inset]' : 'text-fg-muted hover:text-fg'}`}
                     >
                       Data {sortField === 'latest_date' && (sortOrder === 'desc' ? '↓' : '↑')}
                     </button>
                     <button
                       onClick={() => handleSortChange('message_count')}
-                      className={`cursor-pointer px-2.5 py-1 rounded-[7px] text-xs font-medium transition-colors ${sortField === 'message_count' ? 'bg-surface-3 text-fg shadow-[0_1px_2px_rgba(0,0,0,.4),0_0_0_.5px_rgba(255,255,255,.14)_inset]' : 'text-fg-muted hover:text-fg'}`}
+                      className={`cursor-pointer px-2.5 py-1 rounded-[7px] text-xs font-medium transition-colors ${sortField === 'message_count' ? 'bg-surface-3 text-fg shadow-[0_1px_2px_var(--jk-shadow-color),0_0_0_.5px_var(--color-line-strong)_inset]' : 'text-fg-muted hover:text-fg'}`}
                     >
                       Zpráv {sortField === 'message_count' && (sortOrder === 'desc' ? '↓' : '↑')}
                     </button>
                     <button
                       onClick={() => handleSortChange('chat_id')}
-                      className={`cursor-pointer px-2.5 py-1 rounded-[7px] text-xs font-medium transition-colors ${sortField === 'chat_id' ? 'bg-surface-3 text-fg shadow-[0_1px_2px_rgba(0,0,0,.4),0_0_0_.5px_rgba(255,255,255,.14)_inset]' : 'text-fg-muted hover:text-fg'}`}
+                      className={`cursor-pointer px-2.5 py-1 rounded-[7px] text-xs font-medium transition-colors ${sortField === 'chat_id' ? 'bg-surface-3 text-fg shadow-[0_1px_2px_var(--jk-shadow-color),0_0_0_.5px_var(--color-line-strong)_inset]' : 'text-fg-muted hover:text-fg'}`}
                     >
                       ID {sortField === 'chat_id' && (sortOrder === 'desc' ? '↓' : '↑')}
                     </button>
@@ -1360,7 +1372,7 @@ export default function App() {
 
                     <div className="flex items-center gap-2 flex-wrap">
                       {/* Interactive inline search within active conversation */}
-                      <div className="relative flex items-center h-9 rounded-full bg-glass hairline focus-within:shadow-[0_0_0_1px_#0a84ff_inset,0_0_0_3px_rgba(10,132,255,.45)] px-3.5 transition-shadow text-[13px]">
+                      <div className="relative flex items-center h-9 rounded-full bg-glass hairline focus-within:shadow-[0_0_0_1px_var(--color-accent)_inset,var(--jk-focus)] px-3.5 transition-shadow text-[13px]">
                         <Search className="w-4 h-4 text-fg-subtle mr-2 shrink-0" />
                         <input
                           type="text"
@@ -1379,7 +1391,7 @@ export default function App() {
                             <button
                               onClick={handlePrevSearchOccur}
                               disabled={chatSearchResults.length === 0}
-                              className="p-1 hover:bg-white/[.07] disabled:opacity-30 text-fg-muted hover:text-fg rounded-[6px] transition-colors cursor-pointer"
+                              className="p-1 hover:bg-fill disabled:opacity-30 text-fg-muted hover:text-fg rounded-[6px] transition-colors cursor-pointer"
                               title="Předchozí výskyt (Šipka Nahoru)"
                             >
                               <ArrowUp className="w-3" style={{ height: '12px' }} />
@@ -1387,14 +1399,14 @@ export default function App() {
                             <button
                               onClick={handleNextSearchOccur}
                               disabled={chatSearchResults.length === 0}
-                              className="p-1 hover:bg-white/[.07] disabled:opacity-30 text-fg-muted hover:text-fg rounded-[6px] transition-colors cursor-pointer"
+                              className="p-1 hover:bg-fill disabled:opacity-30 text-fg-muted hover:text-fg rounded-[6px] transition-colors cursor-pointer"
                               title="Další výskyt (Šipka Dolů / Enter)"
                             >
                               <ArrowDown className="w-3" style={{ height: '12px' }} />
                             </button>
                             <button
                               onClick={handleClearChatSearch}
-                              className="p-1 hover:bg-white/[.07] text-fg-muted hover:text-danger rounded-[6px] transition-colors cursor-pointer"
+                              className="p-1 hover:bg-fill text-fg-muted hover:text-danger rounded-[6px] transition-colors cursor-pointer"
                               title="Zrušit hledání"
                             >
                               <X className="w-3" style={{ height: '12px' }} />

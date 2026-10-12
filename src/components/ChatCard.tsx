@@ -32,7 +32,7 @@ export default function ChatCard({ chat, isSelected, onClick, isChecked = false,
       className={`mx-2 my-1 px-3 py-3 rounded-row cursor-pointer transition-colors duration-150 flex gap-3 relative text-left items-start ${
         isSelected
           ? 'bg-surface-3 hairline'
-          : 'hover:bg-white/[.03]'
+          : 'hover:bg-fill'
       }`}
     >
       {/* Checkbox column */}

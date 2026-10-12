@@ -1,7 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
-/* ---- Grafický manuál JK · brand/tailwind-v4.css ---- */
+/* ---- Grafický manuál JK · brand/tailwind-v4.css (v1.1) ---- */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+@custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
+
 @theme {
   --color-bg:#08080c;
   --color-surface-1:#111117;
@@ -12,6 +15,8 @@
   --color-fg:#f5f5f7;
   --color-fg-muted:rgba(235,235,245,.60);
   --color-fg-subtle:rgba(235,235,245,.38);
+  --color-fill:rgba(255,255,255,.07);
+  --color-fill-hover:rgba(255,255,255,.12);
   --color-accent:#0a84ff;
   --color-accent-hover:#409cff;
   --color-accent-strong:#0071e3;
@@ -32,17 +37,39 @@
   --radius-panel:18px;
 }
 html{color-scheme:dark}
+html[data-theme="light"]{
+  color-scheme:light;
+  --color-bg:#f5f5f7;
+  --color-surface-1:#ffffff;
+  --color-surface-2:#f2f2f5;
+  --color-surface-3:#e8e8ed;
+  --color-line:rgba(0,0,0,.08);
+  --color-line-strong:rgba(0,0,0,.10);
+  --color-fg:#1d1d1f;
+  --color-fg-muted:rgba(60,60,67,.62);
+  --color-fg-subtle:rgba(60,60,67,.42);
+  --color-fill:rgba(0,0,0,.05);
+  --color-fill-hover:rgba(0,0,0,.09);
+  --color-accent:#007aff;
+  --color-accent-hover:#0062cc;
+  --color-accent-soft:rgba(0,122,255,.12);
+  --color-success:#248a3d;
+  --color-warning:#c93400;
+  --color-danger:#d70015;
+  --color-info:#0071a4;
+}
 body{@apply bg-bg text-fg font-sans antialiased text-sm}
 
 /* ---- Doplňky z brand/tokens.css ---- */
+/* Čtou --jk-* z tokens.css (načtený v index.html), takže se přepínají s režimem. */
 @theme {
-  --color-line-3:rgba(255,255,255,.22);
-  --color-glass:rgba(32,32,40,.72);
-  --color-accent-strong-hover:#0077ed;
-  --color-success-soft:rgba(48,209,88,.16);
-  --color-warning-soft:rgba(255,159,10,.16);
-  --color-danger-soft:rgba(255,69,58,.16);
-  --color-info-soft:rgba(100,210,255,.16);
+  --color-line-3:var(--jk-line-3);
+  --color-glass:var(--jk-glass);
+  --color-accent-strong-hover:var(--jk-accent-strong-hover);
+  --color-success-soft:var(--jk-success-soft);
+  --color-warning-soft:var(--jk-warning-soft);
+  --color-danger-soft:var(--jk-danger-soft);
+  --color-info-soft:var(--jk-info-soft);
   --radius-kbd:5px;
   /* border, border-b, divide-y = hairline 0,5 px */
   --default-border-width:.5px;
@@ -50,12 +77,12 @@ body{@apply bg-bg text-fg font-sans antialiased text-sm}
 
 body{
   line-height:1.5;
-  background-image:radial-gradient(70% 40% at 50% -10%,rgba(94,92,230,.14),transparent 70%);
+  background-image:var(--jk-ambient-app);
   background-attachment:fixed;
 }
 a{color:var(--color-accent)}
 a:hover{color:var(--color-accent-hover)}
-:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(10,132,255,.45)}
+:focus-visible{outline:none;box-shadow:var(--jk-focus)}
 
 /* ---- Komponenty podle manuálu ---- */
 @layer components{
@@ -70,21 +97,21 @@ a:hover{color:var(--color-accent-hover)}
   .btn:disabled{opacity:.4;cursor:not-allowed}
   .btn-primary{background:var(--color-accent-strong);color:#fff}
   .btn-primary:not(:disabled):hover{background:var(--color-accent-strong-hover)}
-  .btn-secondary{background:rgba(255,255,255,.07);color:var(--color-fg);box-shadow:0 0 0 .5px var(--color-line-strong) inset}
-  .btn-secondary:not(:disabled):hover{background:rgba(255,255,255,.12)}
+  .btn-secondary{background:var(--color-fill);color:var(--color-fg);box-shadow:0 0 0 .5px var(--color-line-strong) inset}
+  .btn-secondary:not(:disabled):hover{background:var(--color-fill-hover)}
   .btn-ghost{background:transparent;color:var(--color-accent)}
   .btn-ghost:not(:disabled):hover{background:var(--color-accent-soft)}
-  .btn-danger{background:transparent;color:var(--color-danger);box-shadow:0 0 0 .5px rgba(255,69,58,.4) inset}
+  .btn-danger{background:transparent;color:var(--color-danger);box-shadow:0 0 0 .5px color-mix(in srgb,var(--color-danger) 40%,transparent) inset}
   .btn-danger:not(:disabled):hover{background:var(--color-danger-soft)}
   .btn-icon{width:32px;height:32px;padding:0;border-radius:var(--radius-row);color:var(--color-fg-muted)}
-  .btn-icon:not(:disabled):hover{background:rgba(255,255,255,.07);color:var(--color-fg)}
+  .btn-icon:not(:disabled):hover{background:var(--color-fill);color:var(--color-fg)}
 
   .input{
     height:36px;width:100%;padding:0 12px;border-radius:var(--radius-row);background:var(--color-surface-2);
     color:var(--color-fg);box-shadow:0 0 0 .5px var(--color-line-strong) inset;transition:box-shadow .15s;
   }
   .input::placeholder{color:var(--color-fg-subtle)}
-  .input:focus,.input:focus-within{outline:none;box-shadow:0 0 0 1px var(--color-accent) inset,0 0 0 3px rgba(10,132,255,.45)}
+  .input:focus,.input:focus-within{outline:none;box-shadow:0 0 0 1px var(--color-accent) inset,var(--jk-focus)}
   .label{font-size:12px;font-weight:500;color:var(--color-fg-muted)}
   .section-label{font-size:11px;font-weight:600;color:var(--color-fg-subtle)}
 
@@ -99,7 +126,7 @@ a:hover{color:var(--color-accent-hover)}
   .b-err{color:var(--color-danger);background:var(--color-danger-soft)}
   .b-info{color:var(--color-info);background:var(--color-info-soft)}
   .b-accent{color:var(--color-accent);background:var(--color-accent-soft)}
-  .b-neutral{color:var(--color-fg-muted);background:rgba(255,255,255,.07)}
+  .b-neutral{color:var(--color-fg-muted);background:var(--color-fill)}
   .ver{font-family:var(--font-mono);font-size:11px;color:var(--color-fg-subtle);padding:1px 6px;border-radius:var(--radius-kbd);box-shadow:0 0 0 .5px var(--color-line-strong) inset;white-space:nowrap}
 
   .checkbox{width:16px;height:16px;border-radius:5px;display:flex;align-items:center;justify-content:center;flex:none;
@@ -109,13 +136,22 @@ a:hover{color:var(--color-accent-hover)}
   .glass{background:var(--color-glass);backdrop-filter:blur(30px) saturate(180%);-webkit-backdrop-filter:blur(30px) saturate(180%)}
   .brand-mark{background:linear-gradient(135deg,#0a84ff,#bf5af2 50%,#ff375f);box-shadow:0 0 0 .5px rgba(255,255,255,.18) inset}
   .num{font-variant-numeric:tabular-nums}
+
+  /* Přepínač režimu – manuál, sekce Kód → Přepínač režimu */
+  .theme-toggle{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;flex:none;padding:0;
+    color:var(--jk-text-2);background:var(--jk-fill);box-shadow:var(--jk-hairline);border:0;cursor:pointer;
+    transition:color .15s,background .15s}
+  .theme-toggle:hover{color:var(--jk-text);background:var(--jk-fill-hover)}
+  .theme-toggle:focus-visible{outline:none;box-shadow:var(--jk-focus)}
+  .theme-toggle svg{width:18px;height:18px}
+  [data-theme="light"] .theme-toggle .sun,[data-theme="dark"] .theme-toggle .moon{display:none}
 }
 
 /* Posuvníky */
 ::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--color-surface-3);border-radius:8px}
-::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.22)}
+::-webkit-scrollbar-thumb:hover{background:var(--color-line-3)}
 
 select option{background:var(--color-surface-2);color:var(--color-fg)}
 

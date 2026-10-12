@@ -207,7 +207,7 @@ export default function JSONImportExport({ onImport, onReset, onClose }: JSONImp
             className={`rounded-panel border border-dashed px-5 py-8 flex flex-col items-center justify-center text-center gap-2.5 cursor-pointer transition-colors duration-150 min-h-[200px] ${
               isDragOver
                 ? 'border-accent bg-accent-soft'
-                : 'border-line-3 bg-white/[.02] hover:border-accent hover:bg-accent-soft'
+                : 'border-line-3 bg-fill/40 hover:border-accent hover:bg-accent-soft'
             }`}
             style={{ borderWidth: 1 }}
           >
