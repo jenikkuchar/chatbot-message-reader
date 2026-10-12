@@ -2,7 +2,7 @@
 
 Aplikace je čistě statická (Vite + React), takže běží na GitHub Pages.
 Build a nasazení dělá GitHub Actions (`.github/workflows/deploy.yml`) při každém pushi do `main`.
-Vlastní doména je v souboru `public/CNAME`, který se při buildu zkopíruje do `dist/`.
+Vlastní doména se nastavuje v Settings → Pages (soubor `public/CNAME` je jen informativní).
 
 ## 1. DNS ve WEDOS
 
@@ -40,8 +40,8 @@ Chrání před tím, aby si subdoménu převzal cizí GitHub účet.
 
 1. Repo → **Settings → Pages** → *Build and deployment* → **Source: GitHub Actions**.
 2. Mergni změny do `main` (nebo spusť workflow ručně v záložce **Actions → Deploy to GitHub Pages → Run workflow**).
-3. Po doběhnutí: **Settings → Pages → Custom domain** by mělo ukazovat
-   `chatbot-message-reader.jan-kuchar.cz` (pokud ne, zadej ručně a ulož).
+3. **Settings → Pages → Custom domain** – zadej `chatbot-message-reader.jan-kuchar.cz` a ulož.
+   Při nasazení přes GitHub Actions se soubor `CNAME` nepoužívá, doménu je nutné zadat ručně tady.
 4. Jakmile DNS check projde, zaškrtni **Enforce HTTPS** (certifikát Let's Encrypt vydá GitHub,
    může to trvat až ~1 hodinu).
 
