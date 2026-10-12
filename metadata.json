@@ -1,0 +1,6 @@
+{
+  "name": "Prohlížeč Chatů",
+  "description": "Nástroj pro načítání, filtrování, řazení a detailní zobrazení chatů z JSON v elegantním tmavém režimu.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
